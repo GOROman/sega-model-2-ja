@@ -31,3 +31,8 @@ logs and evidence; it does not amend the translated Sega Retro article.
 VF2 Wasm implementation block diagram (2026-10-14), created and published
 by GOROman, is also explicitly provided under CC BY 4.0. This is a software
 architecture summary, not a physical-board wiring diagram.
+
+Final analysis update (2026-10-14): vf2-scheduler-analysis-ja.md,
+vf2-68000-profile-ja.md and vf2-tgp-optimization-ja.md are original analysis
+documents explicitly provided under CC BY 4.0 by GOROman. Existing source-code
+and third-party licenses are not changed.
