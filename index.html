@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+
+<html lang="ja" xml:lang="ja" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8"/>
+<meta content="pandoc" name="generator"/>
+<meta content="width=device-width, initial-scale=1.0, user-scalable=yes" name="viewport"/>
+<title>Sega Model 2 日本語訳</title>
+<style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+<link href="style.css" rel="stylesheet"/>
+<meta content="Sega RetroのSega Model 2記事の非公式日本語訳。技術仕様、基板別ゲーム一覧、歴史、注釈と参考文献。CC BY 4.0。" name="description"/></head>
+<body><nav aria-label="Languages and downloads" class="top"><a href="index.html" lang="ja">日本語訳</a><a href="en.html" lang="en">English source</a><a download="" href="sega-model-2-ja.md">日本語 Markdown</a><a download="" href="sega-model-2-en.md">English Markdown</a></nav><main id="article">
+<h1 id="sega-model-2-日本語訳">Sega Model 2 日本語訳</h1><details class="toc-disclosure"><summary>目次を開く — 仕様・ゲーム一覧・歴史</summary><nav aria-label="目次" id="TOC" role="doc-toc">
+<ul>
+<li><a href="#sega-model-2-日本語訳" id="toc-sega-model-2-日本語訳">Sega
+Model 2 日本語訳</a>
+<ul>
+<li><a href="#基本情報" id="toc-基本情報">基本情報</a></li>
+<li><a href="#概要" id="toc-概要">概要</a></li>
+<li><a href="#ハードウェア" id="toc-ハードウェア">ハードウェア</a></li>
+<li><a href="#技術仕様" id="toc-技術仕様">技術仕様</a>
+<ul>
+<li><a href="#model-2" id="toc-model-2">Model 2</a></li>
+<li><a href="#model-2a-crx" id="toc-model-2a-crx">Model 2A-CRX</a></li>
+<li><a href="#model-2b-crx" id="toc-model-2b-crx">Model 2B-CRX</a></li>
+<li><a href="#model-2c-crx" id="toc-model-2c-crx">Model 2C-CRX</a></li>
+</ul></li>
+<li><a href="#ゲーム一覧" id="toc-ゲーム一覧">ゲーム一覧</a>
+<ul>
+<li><a href="#model-2-1" id="toc-model-2-1">Model 2</a></li>
+<li><a href="#model-2a-crx-1" id="toc-model-2a-crx-1">Model
+2A-CRX</a></li>
+<li><a href="#model-2b-crx-1" id="toc-model-2b-crx-1">Model
+2B-CRX</a></li>
+<li><a href="#model-2c-crx-1" id="toc-model-2c-crx-1">Model
+2C-CRX</a></li>
+<li><a href="#その他" id="toc-その他">その他</a></li>
+</ul></li>
+<li><a href="#歴史" id="toc-歴史">歴史</a></li>
+<li><a href="#制作クレジット" id="toc-制作クレジット">制作クレジット</a></li>
+<li><a href="#雑誌記事" id="toc-雑誌記事">雑誌記事</a></li>
+<li><a href="#写真ギャラリー" id="toc-写真ギャラリー">写真ギャラリー</a></li>
+<li><a href="#注釈" id="toc-注釈">注釈</a></li>
+<li><a href="#参考文献" id="toc-参考文献">参考文献</a></li>
+</ul></li>
+<li><a href="#board-guide">基板ごとの索引</a></li></ul>
+</nav></details>
+<p>Sega Retro「Sega Model
+2」の日本語訳です。本文・技術仕様・ゲーム一覧・注記・参考文献を収録しています。</p>
+<ul>
+<li>原著者：Sega Retro contributors（Sega Retroの寄稿者）</li>
+<li>原文：<a href="https://segaretro.org/Sega_Model_2">Sega Model
+2</a></li>
+<li>翻訳対象：<a href="https://segaretro.org/index.php?title=Sega_Model_2&amp;oldid=1149915">版ID
+1149915</a></li>
+<li>著者・改訂履歴：<a href="https://segaretro.org/index.php?title=Sega_Model_2&amp;action=history">ページ履歴</a></li>
+<li>原文および本翻訳のライセンス：<a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons
+Attribution 4.0 International（CC BY 4.0）</a></li>
+<li>翻訳・編集日：2026年10月14日</li>
+</ul>
+<p>本ページは原文の翻訳・翻案であり、Sega
+Retroやセガによる公式日本語版ではありません。原文の数値、単位、年代、注記番号を保持し、見出しとレイアウトを再構成し、引用発言は意味を保って日本語の間接話法にしています。原文にある写真、ロゴ、雑誌・資料のスキャンは転載していません。画像類については原ページをご覧ください。本文のライセンス表示は、リンク先の第三者資料や画像にまで適用されるものではありません。</p>
+<p><strong>数値に関する注意：</strong>
+これは原文の翻訳であり、仕様の独立した検証や訂正ではありません。たとえば原文の「24
+Hz HSync」や「80 MAC
+operations/sec」、集計値と内訳の差異なども原文どおり残しています。資料間の違いについては、各注記と参考文献をご確認ください。</p>
+<h2 id="基本情報">基本情報</h2>
+<div aria-label="横スクロールできる表" class="table-scroll" role="region" tabindex="0"><table>
+<thead>
+<tr class="header">
+<th>項目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>名称</td>
+<td>Sega Model 2（モデル2）</td>
+</tr>
+<tr class="even">
+<td>メーカー</td>
+<td>Sega Enterprises, Ltd.</td>
+</tr>
+<tr class="odd">
+<td>派生モデル</td>
+<td>Model 2A-CRX、Model 2B-CRX、Model 2C-CRX</td>
+</tr>
+<tr class="even">
+<td>拡張基板</td>
+<td>DSB1／DSB2（Model 2C-CRX）</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="概要">概要</h2>
+<p>Sega Model 2（モデル2）は、セガがSega Model
+1基板の後継として1993年に初めて登場させたアーケード用システム基板である。Model
+1のハードウェアを発展させたもので、特にテクスチャを貼り付けたポリゴンを導入した点が大きく、当時としてはよりリアルな3Dグラフィックスを可能にした。</p>
+<p>Model 2基板はアーケード業界における重要な節目となり、Daytona
+USA、Virtua Cop、Sega Rally Championship、Dead or Alive、Virtua
+Striker、Cyber Troopers Virtual-On、The House of the
+Deadなど、1990年代を代表する複数のアーケードシリーズの誕生を支えた。1996年にはSega
+Model 3が後継となった。</p>
+<h2 id="ハードウェア">ハードウェア</h2>
+<p>Model 2はModel
+1の直接の後継として設計された。先代と同じく、アーケード事業者向けのプリント基板セットとして、またはセガが製作した専用筐体に組み込まれる形で提供された。General
+Electricがリアルタイムのテクスチャマッピング用ASICをセガに持ちかけたことをきっかけに誕生し、1992年8月の業務提携につながった。<a href="#ref-3">[3]</a> 基板の製作には約1年を要した。<a href="#ref-3">[3]</a></p>
+<p>Model 1からModel
+2への最も目立つ進歩はテクスチャマッピングである。先代が対応していた単色のフラットシェーディングという制限を超え、ポリゴンにビットマップ画像を貼り付けられるようになった。Model
+2では、テクスチャフィルタリングとテクスチャのアンチエイリアシング<a href="#ref-4">[4]</a>、さらにトライリニアフィルタリングも導入された。<a href="#ref-2">[2]</a> テクスチャ付きポリゴンを毎秒500,000個処理でき<a href="#ref-5">[5]</a>、トライリニアフィルタリング<a href="#ref-2">[2]</a>を含むすべてのハードウェア効果<a href="#ref-6">[6]</a>を使用した場合は毎秒300,000ポリゴンを処理できた。<a href="#ref-3">[3]</a>
+当時最も強力なゲームシステムであり、登場から5年後の1998年のPC用グラフィックスカードに相当する性能だった。<a href="#ref-2">[2]</a></p>
+<p>このシステムには、初代Model 2、Model 2A-CRX、Model 2B-CRX、Model
+2C-CRXの計4種類がある。Model
+2と2A-CRXは、ジオメトリ処理用コードを内部に備えたカスタムDSPを使用する。一方、2B-CRXと2C-CRXは詳細な資料が公開されているDSPを使用し、起動時にジオメトリ処理用コードをDSPへ転送する。</p>
+<p>鈴木裕によれば、Fighting Vipers向けに開発されたSega Model
+2B-CRX基板は、処理速度がやや速く、より多くのポリゴンを表示する際の応答性も高いという。<a href="#ref-7">[7]</a></p>
+<section aria-labelledby="board-guide"><h2 id="board-guide">基板ごとの仕様・ゲーム一覧</h2><p>原文の区分に沿った索引です。各仕様欄の数値は原文の記載を保持しています。差分のない項目を補完・推定した比較表ではありません。</p><div aria-label="横スクロールできる表" class="table-scroll" role="region" tabindex="0"><table><tr><th scope="col">基板</th><th scope="col">技術仕様</th><th scope="col">ゲーム一覧</th></tr><tr><th scope="row">Model 2</th><td><a href="#model-2">仕様を読む</a></td><td><a href="#model-2-1">4件</a></td></tr><tr><th scope="row">Model 2A-CRX</th><td><a href="#model-2a-crx">仕様を読む</a></td><td><a href="#model-2a-crx-1">13件</a></td></tr><tr><th scope="row">Model 2B-CRX</th><td><a href="#model-2b-crx">仕様を読む</a></td><td><a href="#model-2b-crx-1">15件</a></td></tr><tr><th scope="row">Model 2C-CRX</th><td><a href="#model-2c-crx">仕様を読む</a></td><td><a href="#model-2c-crx-1">10件</a></td></tr></table></div></section><h2 id="技術仕様">技術仕様</h2>
+<h3 id="model-2">Model 2</h3>
+<div aria-label="横スクロールできる表" class="table-scroll" role="region" tabindex="0"><table class="spec-table"><tr><th scope="row">基板構成</th><td>CPU基板、ビデオ基板、通信基板、ROM基板、サウンド基板、フィードバックドライバー基板<a href="#ref-8">[8]</a></td></tr><tr><th scope="row">リビジョン</th><td>CPU基板 837-10071（50 MHz）、ビデオ基板
+837-10072（50 MHz）、通信基板 837-10537、ROM基板 834-10798、サウンド基板
+837-8679（20 MHz）、ドライブ基板 838-10646<a href="#ref-9">[9]</a></td></tr><tr><th scope="row">メインCPU</th><td>Intel i960-KB @ 25 MHz<a href="#ref-10">[10]</a><a href="#ref-11">[11]</a>
+<ul>
+<li>固定小数点演算：32‑bit RISC命令 @ 25 MIPS<a href="#ref-12">[12]</a></li>
+<li>浮動小数点演算ユニット：32/64/80‑bit演算 @ 13.6 MFLOPS<a href="#ref-11">[11]</a></li>
+<li>バス幅：32‑bit</li>
+</ul></td></tr><tr><th scope="row">追加CPU</th><td>2x Zilog Z80（8/16‑bit命令 @ 1.74 MIPS）<ul>
+<li>通信基板：8 MHz<a href="#ref-9">[9]</a><a href="#ref-13">[13]</a>（1.16 MIPS）</li>
+<li>フィードバックドライバー：4 MHz<a href="#ref-8">[8]</a>（0.58 MIPS）</li>
+</ul></td></tr></table></div>
+<h4 id="サウンド">サウンド</h4>
+<div aria-label="横スクロールできる表" class="table-scroll" role="region" tabindex="0"><table class="spec-table"><tr><th scope="row">サウンドCPU</th><td>Motorola 68000 @ 10 MHz（16/32‑bit命令 @
+1.75 MIPS）</td></tr><tr><th scope="row">サウンドチップ</th><td>2x Sega 315‑5560 MultiPCM</td></tr><tr><th scope="row">PCMチャンネル数</th><td>56</td></tr><tr><th scope="row">PCMサンプルROM</th><td>最大16 MB（PCMチップあたり8 MB）</td></tr><tr><th scope="row">PCM音質</th><td>ビット深度16‑bit、サンプリングレート44.1 kHz（CD音質）<a href="#ref-14">[14]</a></td></tr><tr><th scope="row">サウンドタイマー</th><td>Yamaha YM3438 @ 8 MHz（Model 2のみ）</td></tr></table></div>
+<h4 id="グラフィックス">グラフィックス</h4>
+<p>Sega Model 2のグラフィックス仕様：<a href="#ref-15">[15]</a><a href="#ref-8">[8]</a><a href="#ref-16">[16]</a></p>
+<div aria-label="横スクロールできる表" class="table-scroll" role="region" tabindex="0"><table class="spec-table"><tr><th scope="row">GPU</th><td><ul>
+<li>6x Fujitsu TGP MB86234</li>
+<li>Segaビデオ基板 837-10072</li>
+</ul></td></tr><tr><th scope="row">GPUジオメトリエンジンDSPコプロセッサ</th><td>6x Fujitsu TGP MB86234 @
+16 MHz<a href="#ref-17">[17]</a><a href="#ref-18">[18]</a><a href="#ref-9">[9]</a>
+<ul>
+<li>リビジョン：315‑5673、315‑5677、2x 315‑5678、2x
+315‑5679（後に1994年、2x 315‑5679Bに更新）</li>
+<li>コプロセッサの機能：浮動小数点演算機能、軸回転演算機能、3D行列演算機能、ALU、DMAコントローラー、T&amp;L（座標変換、クリッピング、ライティング）<a href="#ref-19">[19]</a></li>
+<li>命令セット：32‑bit命令、480 MIPS（各80 MIPS）<a href="#note-1">[n
+1]</a></li>
+<li>固定小数点演算：192 MIPS（各32 MIPS）<a href="#note-2">[n
+2]</a></li>
+<li>浮動小数点演算ユニット：96 MFLOPS（各16 MFLOPS）<a href="#note-3">[n
+3]</a></li>
+<li>バス幅：192‑bit（各32‑bit）</li>
+<li>注記：CPU基板上に搭載。DSPには、コプロセッサ機能とT&amp;L機能を実現するため、セガ独自のマイクロコードによる変更が施されている。<a href="#ref-19">[19]</a></li>
+</ul></td></tr><tr><th scope="row">GPUグラフィックスカード</th><td>Segaビデオ基板 837-10072 @ 50 MHz<a href="#ref-9">[9]</a><a href="#ref-21">[21]</a>
+<ul>
+<li>セガ製Zソート／クリッピング用チップセット：315‑5644（32 MHz）、315‑5645（32 MHz）、315‑5712（40 MHz）、2x
+315‑5725（50 MHz）</li>
+<li>Lockheed
+Martin製ラスタライズ／テクスチャマッピング用プロセッサ：315‑5646（50 MHz）、315‑5647（50 MHz）</li>
+<li>Sega System
+24タイルマップエンジン：315‑5292タイルマップジェネレーター（32 MHz）<a href="#ref-22">[22]</a><a href="#ref-23">[23]</a></li>
+</ul></td></tr><tr><th scope="row">ディスプレイ</th><td>最大50-inchのディスプレイ<a href="#ref-24">[24]</a></td></tr><tr><th scope="row">表示解像度</th><td>496×384
+pixels、水平同期（HSync）24 Hz、プログレッシブ走査（ノンインターレース）、ダブルバッファリング<a href="#ref-15">[15]</a></td></tr><tr><th scope="row">オーバースキャン解像度</th><td>656×496</td></tr><tr><th scope="row">ピクセルクロック</th><td>19.523 MHz</td></tr><tr><th scope="row">リフレッシュレート</th><td>60 Hz、57.52416 Hz、30 Hz<a href="#ref-15">[15]</a></td></tr><tr><th scope="row">フレームレート</th><td>60 FPS、<a href="#ref-25">[25]</a>
+57.52416 FPS、30 FPS</td></tr><tr><th scope="row">色深度</th><td>65,536（16bpp）、16,777,216（24bpp）、<a href="#ref-5">[5]</a> 256（8bpp）</td></tr><tr><th scope="row">グラフィックスハードウェアの機能</th><td>フラットシェーディング、テクスチャマッピング、パースペクティブ補正、テクスチャフィルタリング、テクスチャのアンチエイリアシング、マイクロテクスチャ、拡散反射、鏡面反射、スペキュラーライティング、アルファブレンディング、透明処理、ラスタライズ、ミップマッピング、LOD、<a href="#ref-15">[15]</a>
+Zバッファリング、ポイントサンプリング、バイリニアフィルタリング、トライリニアフィルタリング<a href="#ref-2">[2]</a></td></tr><tr><th scope="row">テクスチャマップ解像度</th><td>最大1024×2048 pixels</td></tr><tr><th scope="row">マイクロテクスチャのサイズ</th><td>最大128×128 pixels</td></tr><tr><th scope="row">演算性能</th><td>110 MFLOPS（浮動小数点）、210 MIPS（固定小数点）<a href="#note-4">[n 4]</a>
+<ul>
+<li>加算：61 million adds/sec（浮動小数点）、110 million
+adds/sec（固定小数点）<a href="#note-5">[n 5]</a></li>
+<li>乗算：61 million multiplies/sec（浮動小数点）、110 million
+multiplies/sec（固定小数点）<a href="#note-6">[n 6]</a></li>
+<li>除算：30 million divides/sec<a href="#note-7">[n 7]</a></li>
+</ul></td></tr><tr><th scope="row">ジオメトリ変換</th><td>6 million vertices/sec、<a href="#note-8">[n 8]</a>
+2 million polygons/sec<a href="#note-9">[n 9]</a></td></tr><tr><th scope="row">フラットライティング</th><td>1.2 million polygons/sec（浮動小数点）、<a href="#note-10">[n 10]</a> 2 million polygons/sec（固定小数点）<a href="#note-11">[n 11]</a></td></tr><tr><th scope="row">スペキュラーライティング</th><td>900,000 polygons/sec<a href="#note-12">[n
+12]</a></td></tr><tr><th scope="row">グーローライティング</th><td>880,000 polygons/sec（浮動小数点）、<a href="#note-13">[n 13]</a> 1.5 million polygons/sec（固定小数点）<a href="#note-14">[n 14]</a></td></tr><tr><th scope="row">レンダリングのフィルレート</th><td>110 MPixels/s（16bpp）、230
+MPixels/s（8bpp）、260 MPixels/s（4bpp）<ul>
+<li>ポリゴン：100 MPixels/s（16bpp）、200 MPixels/s（8bpp）<a href="#note-15">[n 15]</a></li>
+<li>タイルマップ：15 MPixels/s（16bpp）、30 MPixels/s（8bpp）、61
+MPixels/s（4bpp）<a href="#note-16">[n 16]</a></li>
+</ul></td></tr><tr><th scope="row">ポリゴン描画性能</th><td>100 MPixels/s、900,000 vectors/sec</td></tr><tr><th scope="row">テクスチャマッピング性能</th><td>100 MTexels/s、ライティング<ul>
+<li>900,000 polygons/sec：スペキュラー、100-texelのポリゴン</li>
+<li>500,000 polygons/sec：<a href="#ref-5">[5]</a>
+スペキュラー、200-texelのポリゴン</li>
+<li>300,000 polygons/sec：すべてのハードウェアエフェクト、<a href="#ref-6">[6]</a> トライリニアフィルタリング、<a href="#ref-2">[2]</a> スペキュラー、300-texelのポリゴン</li>
+<li>300,000
+polygons/sec：グーローシェーディング（ソフトウェア）、32-texelのポリゴン<a href="#note-17">[n 17]</a></li>
+</ul></td></tr><tr><th scope="row">ハードウェアサポート</th><td>モーションキャプチャー</td></tr></table></div>
+<h4 id="メモリ">メモリ</h4>
+<div aria-label="横スクロールできる表" class="table-scroll" role="region" tabindex="0"><table class="spec-table"><tr><th scope="row">メモリ</th><td>最大62 MB（メイン10,881 KB、ビデオ35,460 KB、オーディオ16,960 KB、その他18 KB）</td></tr><tr><th scope="row">システムRAM</th><td>9776 KB（9.546875 MB）<a href="#ref-15">[15]</a>
+<ul>
+<li>メインRAM：1152 KB（1.125 MB）</li>
+<li>VRAM：5984 KB（フレームバッファVRAM
+1 MB、コプロセッサバッファSRAM/SDRAM 64 KB、テクスチャSRAM/SDRAM
+4 MB、輝度128 KB、ジオメトリ32 KB、タイル576 KB、色64 KB）</li>
+<li>オーディオRAM：576 KB</li>
+<li>その他のRAM：2064 KB（バックアップSRAM/NVRAM 16 KB、追加RAM
+2 MB）</li>
+</ul></td></tr><tr><th scope="row">プロセッサ内部キャッシュ</th><td>36.75 KB<ul>
+<li>CPUキャッシュ：768 bytes<a href="#ref-10">[10]</a></li>
+<li>TGP内部RAMキャッシュ：36 KB（TGPあたり6 KB）<a href="#ref-18">[18]</a></li>
+</ul></td></tr><tr><th scope="row">ゲームROM</th><td>最大54.25 MB<ul>
+<li>メインROM：9.5 MB（EPROM、MROM）</li>
+<li>ビデオROM：28.75 MB（MROM）</li>
+<li>オーディオROM：16 MB（MROM）</li>
+</ul></td></tr></table></div>
+<h4 id="帯域幅">帯域幅</h4>
+<div aria-label="横スクロールできる表" class="table-scroll" role="region" tabindex="0"><table class="spec-table"><tr><th scope="row">システムRAM帯域幅</th><td>982 MB/s<ul>
+<li>メインRAM帯域幅：78.7 MB/s
+<ul>
+<li>i960：66.7 MB/s<a href="#ref-30">[30]</a></li>
+<li>Z80：12 MB/s<a href="#note-18">[n 18]</a></li>
+</ul></li>
+<li>VRAM帯域幅：883.34066 MB/s<a href="#ref-9">[9]</a><a href="#ref-21">[21]</a>
+<ul>
+<li>TGP：384 MB/s<a href="#note-19">[n 19]</a></li>
+<li>ビデオ基板：499.34066 MB/s
+<ul>
+<li>315‑5292 &amp; 315‑5644：30.769232 MB/s<a href="#note-20">[n
+20]</a></li>
+<li>315‑5645：28.571428 MB/s<a href="#note-21">[n 21]</a></li>
+<li>315‑5646 &amp; 315‑5647：400 MB/s<a href="#note-22">[n 22]</a></li>
+<li>315‑5712：40 MB/s<a href="#note-23">[n 23]</a></li>
+</ul></li>
+</ul></li>
+<li>オーディオRAM帯域幅：20 MB/s<a href="#note-24">[n 24]</a></li>
+</ul></td></tr><tr><th scope="row">プロセッサ内部キャッシュ帯域幅</th><td>484 MB/s<ul>
+<li>CPUキャッシュ：100 MB/s<a href="#note-25">[n 25]</a></li>
+<li>TGP内部RAMキャッシュ：384 MB/s<a href="#note-26">[n 26]</a></li>
+</ul></td></tr><tr><th scope="row">ゲームROM帯域幅</th><td>933–1000 MB/s<a href="#note-27">[n 27]</a><a href="#ref-9">[9]</a><a href="#ref-8">[8]</a>
+<ul>
+<li>EPROM：133–200 MB/s<a href="#note-28">[n 28]</a></li>
+<li>MROM：800 MB/s<a href="#note-29">[n 29]</a></li>
+</ul></td></tr></table></div>
+<h3 id="model-2a-crx">Model 2A-CRX</h3>
+<p>1994年に登場したModel
+2A-CRXでは、サウンド機能の強化とROM容量の増加が行われた。</p>
+<div aria-label="横スクロールできる表" class="table-scroll" role="region" tabindex="0"><table class="spec-table"><tr><th scope="row">サウンドCPU</th><td>Motorola 68000 @ 12 MHz（16/32‑bit命令 @
+2.1 MIPS）</td></tr><tr><th scope="row">サウンドチップ</th><td>Yamaha SCSP</td></tr><tr><th scope="row">PCMチャンネル数</th><td>32</td></tr><tr><th scope="row">PCMサンプルROM</th><td>最大16 MB</td></tr><tr><th scope="row">PCM音質</th><td>ビット深度16‑bit、サンプリングレート44.1 kHz（CD音質）</td></tr><tr><th scope="row">SCSPの機能</th><td>128-step DSP、32チャンネルのPCM/FM/MIDI/LFO</td></tr><tr><th scope="row">メモリ</th><td>最大142 MB（メイン35,969 KB、ビデオ90,244 KB、オーディオ16,960 KB、その他2064 KB）</td></tr><tr><th scope="row">システムRAM</th><td>9776 KB（9.546875 MB）<ul>
+<li>メインRAM：1152 KB（1.125 MB）</li>
+<li>VRAM：5984 KB（5.84375 MB）</li>
+<li>オーディオRAM：576 KB</li>
+<li>その他のRAM：2064 KB（2.015625 MB）</li>
+</ul></td></tr><tr><th scope="row">プロセッサ内部キャッシュ</th><td>36.75 KB<ul>
+<li>CPUキャッシュ：768 bytes</li>
+<li>TGP内部RAMキャッシュ：36 KB</li>
+</ul></td></tr><tr><th scope="row">ゲームROM</th><td>最大132.25 MB（メイン34 MB、ビデオ82.25 MB、<a href="#ref-37">[37]</a> オーディオ16 MB）</td></tr></table></div>
+<h3 id="model-2b-crx">Model 2B-CRX</h3>
+<p>1995年に登場したModel
+2B-CRXでは、ジオメトリエンジンDSPコプロセッサの強化とVRAMの増設が行われた。<a href="#ref-15">[15]</a></p>
+<div aria-label="横スクロールできる表" class="table-scroll" role="region" tabindex="0"><table class="spec-table"><tr><th scope="row">GPUジオメトリエンジンDSPコプロセッサ</th><td>2x ADSP-21062 SHARC @ 40 MHz<a href="#ref-38">[38]</a>
+<ul>
+<li>コプロセッサの機能：浮動小数点演算機能、軸回転演算機能、3D行列演算機能、SOC、ALU、T&amp;L</li>
+<li>固定小数点命令：32‑bit命令、80 MIPS（各40 MIPS）</li>
+<li>浮動小数点演算ユニット：32/40‑bit演算、240 MFLOPS（各120 MFLOPS）、80
+MAC operations/sec（各40 MACs/sec）</li>
+<li>データバス幅：96‑bit（各48‑bit）</li>
+<li>DMAコントローラー：20 DMAチャンネル（各10チャンネル）、SHARCあたり80
+MHzのメモリアクセス（デュアルメモリアクセス）、転送速度480 MB/s（各240 MB/s）</li>
+</ul></td></tr><tr><th scope="row">ライティング演算</th><td>240 MFLOPS<ul>
+<li>フラットライティング：1.8 million polygons/sec（浮動小数点）<a href="#note-30">[n 30]</a></li>
+<li>スペキュラーライティング：1.5 million polygons/sec<a href="#note-31">[n 31]</a></li>
+<li>グーローライティング：1.3 million polygons/sec（浮動小数点）<a href="#note-32">[n 32]</a></li>
+</ul></td></tr><tr><th scope="row">レンダリングのフィルレート</th><td>130 MPixels/s（16bpp）、270
+MPixels/s（8bpp）、300 MPixels/s（4bpp）<ul>
+<li>ポリゴン：120 MPixels/s（16bpp）、<a href="#note-33">[n 33]</a> 240
+MPixels/s（8bpp）</li>
+<li>タイルマップ：15 MPixels/s（16bpp）、30 MPixels/s（8bpp）、61
+MPixels/s（4bpp）</li>
+</ul></td></tr><tr><th scope="row">テクスチャマッピング性能</th><td>120 MTexels/s、ライティング<ul>
+<li>900,000 polygons/sec：スペキュラー、130-texelのポリゴン</li>
+<li>600,000 polygons/sec：スペキュラー、200-texelのポリゴン</li>
+<li>300,000
+polygons/sec：グーローシェーディング（ソフトウェア）、32-texelのポリゴン<a href="#note-34">[n 34]</a></li>
+</ul></td></tr><tr><th scope="row">メモリ</th><td>最大150.21 MB（メイン35.125 MB、ビデオ99,332 KB、オーディオ16,960 KB、その他18 KB）</td></tr><tr><th scope="row">システムRAM</th><td>18,388 KB（17.957031 MB）<a href="#ref-8">[8]</a>
+<ul>
+<li>メインRAM：1152 KB（1.125 MB）</li>
+<li>VRAM：14,596 KB（フレームバッファVRAM
+1.5 MB、コプロセッサバッファSRAM/SDRAM 8228 KB、テクスチャSRAM/SDRAM
+4 MB、輝度64 KB、ジオメトリ32 KB、タイル576 KB、色64 KB）</li>
+<li>オーディオRAM：576 KB</li>
+<li>その他のRAM：2064 KB（2.015625 MB）</li>
+</ul></td></tr><tr><th scope="row">プロセッサ内部キャッシュ</th><td>512.75 KB<ul>
+<li>CPUキャッシュ：768 bytes</li>
+<li>DSP内部RAMキャッシュ：512 KB SRAM（DSPあたり256 KB）<a href="#ref-38">[38]</a></li>
+</ul></td></tr><tr><th scope="row">ゲームROM</th><td>最大132.25 MB（メイン34 MB、ビデオ82.25 MB、オーディオ16 MB）</td></tr><tr><th scope="row">システムRAM帯域幅</th><td>1.1 GB/s<ul>
+<li>メインRAM帯域幅：112 MB/s</li>
+<li>VRAM帯域幅：979.34066 MB/s
+<ul>
+<li>SHARC：480 MB/s（2x 240 MB/s）<a href="#ref-39">[39]</a></li>
+<li>ビデオ基板：499.34066 MB/s</li>
+</ul></li>
+<li>オーディオRAM帯域幅：20 MB/s</li>
+</ul></td></tr></table></div>
+<h3 id="model-2c-crx">Model 2C-CRX</h3>
+<p>1996年に登場したModel
+2C-CRXでは、GPUチップセットが強化され、MPEGサウンド基板がオプションで用意された。</p>
+<div aria-label="横スクロールできる表" class="table-scroll" role="region" tabindex="0"><table class="spec-table"><tr><th scope="row">GPUジオメトリコプロセッサ</th><td>2x Fujitsu TGPx4 MB86235 @ 40 MHz<a href="#ref-15">[15]</a><a href="#ref-40">[40]</a>
+<ul>
+<li>コプロセッサの機能：ジオメトリエンジンDSP、浮動小数点演算機能、軸回転演算機能、3D行列演算機能、ALU、DMA、T&amp;L</li>
+<li>バス幅：192‑bit（各96‑bit；64‑bit SDRAM、32‑bit SRAM）</li>
+</ul></td></tr><tr><th scope="row">GPU描画プロセッサ</th><td>2x Fujitsu MB86271 AGP（Advanced Graphics
+Processor）@ 60 MHz<a href="#ref-41">[41]</a>
+<ul>
+<li>機能：ハードウェアレンダリング、DMA</li>
+<li>固定小数点演算：32/64‑bit命令、240 MIPS（各120 MIPS）</li>
+</ul></td></tr><tr><th scope="row">GPU Zソーター</th><td>2x Fujitsu MB86272<a href="#ref-41">[41]</a>
+<ul>
+<li>機能：Zソート、クリッピング</li>
+</ul></td></tr><tr><th scope="row">グラフィックスハードウェアの機能</th><td>グーローシェーディング、隠面処理、Zバッファリング、ポイントサンプリング、バイリニアフィルタリング、トライリニアフィルタリング<a href="#ref-42">[42]</a></td></tr><tr><th scope="row">レンダリングのフィルレート</th><td>200 MPixels/s（16bpp）、400
+MPixels/s（8bpp）、430 MPixels/s（4bpp）<ul>
+<li>ポリゴン：188 MPixels/s（16bpp）、<a href="#note-35">[n 35]</a> 376
+MPixels/s（8bpp）</li>
+<li>タイルマップ：15 MPixels/s（16bpp）、30 MPixels/s（8bpp）、61
+MPixels/s（4bpp）</li>
+</ul></td></tr><tr><th scope="row">テクスチャマッピング性能</th><td>188
+MTexels/s、ライティング、スペキュラー、<a href="#ref-15">[15]</a>
+アルファブレンディング<a href="#ref-40">[40]</a>
+<ul>
+<li>900,000 polygons/sec：150-texelのポリゴン<a href="#note-36">[n
+36]</a></li>
+<li>600,000 polygons/sec：Zソート、<a href="#note-37">[n 37]</a>
+400-texelのポリゴン</li>
+<li>520,000 polygons/sec：グーローシェーディング、<a href="#note-38">[n
+38]</a> 150-texelのポリゴン<a href="#note-39">[n 39]</a></li>
+<li>360,000 polygons/sec：グーローシェーディング、Zソート、<a href="#note-40">[n 40]</a> 300-texelのポリゴン</li>
+</ul></td></tr><tr><th scope="row">オプションのMPEGサウンド基板</th><td>DSB1<ul>
+<li>サウンドCPU：Zilog Z80（8/16‑bit命令）</li>
+<li>サウンドチップ：NEC µD65654GF102</li>
+</ul></td></tr><tr><th scope="row">オプションのMPEGサウンド基板</th><td>DSB2<ul>
+<li>サウンドCPU：Motorola 68000（16/32‑bit命令）</li>
+<li>サウンドチップ：NEC µD65654GF102</li>
+</ul></td></tr></table></div>
+<h2 id="ゲーム一覧">ゲーム一覧</h2>
+<p>作品名と年は原文の表記を保持しています。同一作品が複数の基板欄に掲載される場合も原文どおりです。</p>
+<h3 id="model-2-1">Model 2</h3>
+<div aria-label="横スクロールできる表" class="table-scroll" role="region" tabindex="0"><table class="games-table"><tr><th scope="col">作品名</th><th scope="col">年・備考</th></tr><tr><td>Daytona USA</td><td>1993</td></tr><tr><td>Daytona USA Deluxe '93</td><td>1993</td></tr><tr><td>Desert Tank</td><td>1994</td></tr><tr><td>Virtua Cop</td><td>1994</td></tr></table></div>
+<h3 id="model-2a-crx-1">Model 2A-CRX</h3>
+<div aria-label="横スクロールできる表" class="table-scroll" role="region" tabindex="0"><table class="games-table"><tr><th scope="col">作品名</th><th scope="col">年・備考</th></tr><tr><td>Virtua Fighter 2</td><td>1994</td></tr><tr><td>Manx TT Superbike</td><td>1995</td></tr><tr><td>Sega Rally Championship</td><td>1995</td></tr><tr><td>Sky Target</td><td>1995</td></tr><tr><td>Virtua Cop 2</td><td>1995</td></tr><tr><td>Dead or Alive</td><td>1996</td></tr><tr><td>Dynamite Cop</td><td>1996</td></tr><tr><td>Virtua Fighter 2.1</td><td>1996</td></tr><tr><td>Motor Raid</td><td>1997</td></tr><tr><td>Zero Gunner</td><td>1997</td></tr><tr><td>Hanguk Pro Yagu 98</td><td>1998</td></tr><tr><td>Pilot Kids</td><td>1999</td></tr><tr><td>Air Walkers （未発売）</td><td>—</td></tr></table></div>
+<h3 id="model-2b-crx-1">Model 2B-CRX</h3>
+<div aria-label="横スクロールできる表" class="table-scroll" role="region" tabindex="0"><table class="games-table"><tr><th scope="col">作品名</th><th scope="col">年・備考</th></tr><tr><td>Fighting Vipers</td><td>1995</td></tr><tr><td>Gunblade NY</td><td>1995</td></tr><tr><td>Indy 500</td><td>1995</td></tr><tr><td>Rail Chase 2</td><td>1995</td></tr><tr><td>Virtua Striker</td><td>1995</td></tr><tr><td>Dead or Alive</td><td>1996</td></tr><tr><td>Dynamite Baseball</td><td>1996</td></tr><tr><td>Dynamite Cop</td><td>1996</td></tr><tr><td>Last Bronx</td><td>1996</td></tr><tr><td>Pilot Kids</td><td>1999</td></tr><tr><td>Sonic the Fighters</td><td>1996</td></tr><tr><td>Super GT 24H</td><td>1996</td></tr><tr><td>Cyber Troopers Virtual-On</td><td>1996</td></tr><tr><td>Dynamite Baseball 97</td><td>1997</td></tr><tr><td>Zero Gunner</td><td>1997</td></tr></table></div>
+<h3 id="model-2c-crx-1">Model 2C-CRX</h3>
+<div aria-label="横スクロールできる表" class="table-scroll" role="region" tabindex="0"><table class="games-table"><tr><th scope="col">作品名</th><th scope="col">年・備考</th></tr><tr><td>Dynamite Cop</td><td>1996</td></tr><tr><td>Over Rev</td><td>1997</td></tr><tr><td>Power Sled</td><td>1996</td></tr><tr><td>Sega Ski Super G</td><td>1996</td></tr><tr><td>Sega Touring Car Championship</td><td>1996</td></tr><tr><td>Sega Water Ski</td><td>1996</td></tr><tr><td>Wave Runner</td><td>1996</td></tr><tr><td>The House of the Dead</td><td>1997</td></tr><tr><td>Top Skater</td><td>1997</td></tr><tr><td>Behind Enemy Lines</td><td>1998</td></tr></table></div>
+<h3 id="その他">その他</h3>
+<div aria-label="横スクロールできる表" class="table-scroll" role="region" tabindex="0"><table class="games-table"><tr><th scope="col">作品名</th><th scope="col">年・備考</th></tr><tr><td>Ultimate Domain （未発売） — Atlusが開発。Mean Machines
+Sega第51号で紹介された。</td><td>—</td></tr></table></div>
+<h2 id="歴史">歴史</h2>
+<p>Model
+2の開発は、著名なゲームデザイナーである鈴木裕とセガAM2のチームが主導し<a href="#ref-46">[46]</a>、セガ、富士通、GE
+Aerospaceの共同プロジェクトとして進められた。GE
+Aerospaceは1993年にMartin Mariettaに買収され、現在はLockheed
+Martinの一部となっている。セガはポリゴンのジオメトリエンジンを社内開発した。<a href="#ref-16">[16]</a>
+富士通のDSPコプロセッサにセガ独自のマイクロコードを組み込み、ハードウェアT&amp;L機能を実現したものである。<a href="#ref-19">[19]</a>
+家庭向けシステムにハードウェアT&amp;Lが登場するのは、その何年も後のことだった。これにGE
+Aerospaceの高価なテクスチャマッピング技術<a href="#ref-16">[16]</a>を組み合わせ、鈴木のチームはより低価格なチップセットへとまとめ上げた。</p>
+<p>鈴木の説明によれば、Model
+2のテクスチャマッピング用チップは、旧General Electric Aerial &amp;
+Spaceの技術を受け継いだLockheed
+Martinの軍用機器に由来する。総額3,200万米ドルのフライトシミュレーション装置の一部で、チップだけを買う場合でも200万米ドルと提示されたという。それをビデオゲーム用に作り変え、1台あたり5,000円（50米ドル）で利用できる技術にする必要があった。困難だったものの5,000円で実現できたが、この技術をゲーム用に購入したいと話した際、セガでは誰も信じてくれなかったとも述べている。<a href="#ref-46">[46]</a>
+結果として成功し、業界に量産可能なテクスチャマッピング技術をもたらしたという。またVirtua
+Fighter 2ではモーションキャプチャ技術も活用し、ゲーム業界に導入した。<a href="#ref-47">[47]</a></p>
+<p>新しいCPUを扱ううえでの問題もあった。<a href="#ref-46">[46]</a>
+使用したIntel i960-KBは、原文によれば1993年に登場したばかりだった。<a href="#ref-11">[11]</a>
+鈴木は、新しいCPUにはまだデバッガがなく、最新ハードウェア自体にも多くのバグがあると説明している。デバッガが存在してもそのデバッガにもバグがあり、デバッガそのものをデバッグしなければならなかった。さらに、新しいハードウェアにはライブラリもシステムもないため、それらもすべて作る必要があり、過酷な循環だったという。<a href="#ref-46">[46]</a></p>
+<p>1998年末のインタビューで、元GE Aerospace（後のLockheed
+Martin）社員であるRead3DのJon Lenyoは、セガによるModel
+2の開発は、早くも1990年11月までさかのぼれると述べた。この時、彼とGE
+Aerospaceの社員たちがセガを訪問し、自社技術のトライリニア・テクスチャフィルタリングとシェーディング機能を実演した。セガはすでに社内でSega
+Model 1の開発を進めていたため、最終的にGE Aerospaceの技術はModel
+2に組み込まれた。<a href="#ref-2">[2]</a></p>
+<p>このアーケード基板はDaytona
+USAとともに登場した。同作は1993年に完成して著作権表示が付され、1993年のアミューズメントマシンショーで初披露された。<a href="#ref-48">[48]</a></p>
+<p>約15,000米ドル（2014年の価値で25,000米ドル相当）という高価格にもかかわらず、Model
+2プラットフォームは大きな成功を収めた。Daytona USA、Virtua Fighter
+2、Cyber Troopers Virtual-On、The House of the Dead、Dead or
+Aliveなど、歴代でも特に高い売上を記録したアーケードゲームが登場した。セガは初年度に33,000台以上のModel
+2を販売し<a href="#ref-49">[49]</a>、その後は年間65,000台を販売した。<a href="#ref-2">[2]</a>
+1996年までの累計販売台数は130,000台を超え、ハードウェア筐体の販売による売上は20億米ドルに達した。<a href="#note-41">[n 41]</a>
+インフレ調整後では30億米ドル以上に相当し、歴代でも特に多く売れたアーケードシステムの一つとなった。</p>
+<p>Model 2は1996年にSega Model 3へと引き継がれた。Model 3の後継にはSega
+NAOMI、Sega Hikaru、Sega NAOMI 2が続いた。</p>
+<h2 id="制作クレジット">制作クレジット</h2>
+<ul>
+<li>Hiroshi Yagi <a href="#ref-52">[52]</a></li>
+<li>3Dプレビュー用ソフトウェア：Kenneth Ibrahim <a href="#ref-53">[53]</a></li>
+<li>情報源：開発者による言及</li>
+</ul>
+<h2 id="雑誌記事">雑誌記事</h2>
+<p>詳細は原サイトの<a href="https://segaretro.org/Sega_Model_2/Magazine_articles">Sega Model
+2／Magazine articles</a>を参照。</p>
+<h2 id="写真ギャラリー">写真ギャラリー</h2>
+<p>写真自体は転載していません。<a href="https://segaretro.org/index.php?title=Sega_Model_2&amp;oldid=1149915#Photo_gallery">原文の写真ギャラリー</a>には、次の写真が掲載されています。</p>
+<ul>
+<li>CPU</li>
+<li>ビデオ基板</li>
+<li>一般的なROM基板（Virtua Cop）</li>
+<li>Model 2A CPU</li>
+<li>Model 2Aビデオ基板</li>
+<li>Model 2A ROM基板（Dead or Alive）</li>
+<li>Model 2B CPU／ビデオ基板</li>
+<li>Model 2Bフィルター基板</li>
+<li>Model 2B通信基板</li>
+<li>Model 2B ROM基板</li>
+<li>Model 2C基板</li>
+<li>日本のセガによるModel 2B CRXの公式写真</li>
+</ul>
+<h2 id="注釈">注釈</h2>
+<p><a id="note-1"></a></p>
+<p>[n 1] サイクルあたり5命令<a href="#ref-20">[20]</a>。</p>
+<p><a id="note-2"></a></p>
+<p>[n 2] サイクルあたり1回の<a href="https://en.wikipedia.org/wiki/Multiply%E2%80%93accumulate_operation">MAC（積和）演算</a>（乗算と加算）<a href="#ref-20">[20]</a>。</p>
+<p><a id="note-3"></a></p>
+<p>[n 3] サイクルあたり1演算（MAC演算あたり2サイクル）<a href="#ref-20">[20]</a>。</p>
+<p><a id="note-4"></a></p>
+<p>[n 4] TGP：96 MFLOPS、192 MIPS<a href="#ref-18">[18]</a>。<br/>i960：13.6 MFLOPS、25 MIPS<a href="#ref-11">[11]</a>。</p>
+<p><a id="note-5"></a></p>
+<p>[n 5]
+TGP：加算48百万回/秒（浮動小数点）、加算96百万回/秒（固定小数点）<a href="#ref-26">[26]</a>。<br/>i960：加算13.6百万回/秒（浮動小数点）、加算25百万回/秒（固定小数点）。</p>
+<p><a id="note-6"></a></p>
+<p>[n 6]
+TGP：乗算48百万回/秒（浮動小数点）、乗算96百万回/秒（固定小数点）<a href="#ref-26">[26]</a>。<br/>i960：乗算13.6百万回/秒（浮動小数点）、乗算25百万回/秒（固定小数点）。</p>
+<p><a id="note-7"></a></p>
+<p>[n 7] Zソートおよびクリッピング用チップセット、32 MHz。</p>
+<p><a id="note-8"></a></p>
+<p>[n 8] TGP：5,333,333頂点/秒、頂点あたり18サイクル（9回のMAC演算）<a href="#ref-15">[15]</a>。<br/>i960：755,555頂点/秒、頂点あたり18回の浮動小数点演算（9回のMAC演算）。</p>
+<p><a id="note-9"></a></p>
+<p>[n 9] 三角形ポリゴンあたり3頂点。</p>
+<p><a id="note-10"></a></p>
+<p>[n 10]
+TGP：1,043,478ポリゴン/秒、ポリゴンあたり92サイクル（46回のMAC演算）<a href="#ref-15">[15]</a>。<br/>i960：147,826ポリゴン/秒、ポリゴンあたり92回の浮動小数点演算（46回のMAC演算）。</p>
+<p><a id="note-11"></a></p>
+<p>[n 11] ポリゴンあたり46サイクル（46回のMAC演算）<a href="#ref-15">[15]</a>。</p>
+<p><a id="note-12"></a></p>
+<p>[n 12] ポリゴンあたり102サイクル（51回のMAC演算）<a href="#ref-15">[15]</a>。</p>
+<p><a id="note-13"></a></p>
+<p>[n 13]
+TGP：774,193ポリゴン/秒、ポリゴンあたり124サイクル（62回のMAC演算）<a href="#ref-15">[15]</a><a href="#ref-27">[27]</a>。<br/>i960：109,677ポリゴン/秒、ポリゴンあたり124回の浮動小数点演算（62回のMAC演算）。</p>
+<p><a id="note-14"></a></p>
+<p>[n 14] ポリゴンあたり62サイクル（62回のMAC演算）<a href="#ref-15">[15]</a><a href="#ref-27">[27]</a>。</p>
+<p><a id="note-15"></a></p>
+<p>[n 15] ポリゴン描画帯域幅400 MB/s（2×32ビット、50 MHz）。</p>
+<p><a id="note-16"></a></p>
+<p>[n 16] タイルマップ生成器の帯域幅30.769232 MB/s（2×16ビット、7.692308
+MHz）。</p>
+<p><a id="note-17"></a></p>
+<p>[n 17]
+ポリゴンあたり163サイクル（ジオメトリ処理124サイクル、ラスタ演算39回）。走査線4本のポリゴンあたり175サイクル（ポリゴンごとに走査線あたり3演算）<a href="#ref-28">[28]</a><a href="#ref-29">[29]</a>。32ピクセルのポリゴンあたり271サイクル（ピクセルあたり3サイクル）。</p>
+<p><a id="note-18"></a></p>
+<p>[n 18] 2×8ビット、8/4 MHz。</p>
+<p><a id="note-19"></a></p>
+<p>[n 19] 6×32ビット、16 MHz<a href="#ref-31">[31]</a>。</p>
+<p><a id="note-20"></a></p>
+<p>[n 20] 2×16ビット、7.692308 MHz<a href="#ref-32">[32]</a>。</p>
+<p><a id="note-21"></a></p>
+<p>[n 21] 16ビット、14.285714 MHz<a href="#ref-33">[33]</a>。</p>
+<p><a id="note-22"></a></p>
+<p>[n 22] 2×32ビット、50 MHz。</p>
+<p><a id="note-23"></a></p>
+<p>[n 23] 8ビット、40 MHz<a href="#ref-34">[34]</a>。</p>
+<p><a id="note-24"></a></p>
+<p>[n 24] 16ビット、10 MHz。</p>
+<p><a id="note-25"></a></p>
+<p>[n 25] 32ビット、25 MHz。</p>
+<p><a id="note-26"></a></p>
+<p>[n 26] 6×32ビット、16 MHz。</p>
+<p><a id="note-27"></a></p>
+<p>[n 27] 5×32ビット。</p>
+<p><a id="note-28"></a></p>
+<p>[n 28] 32ビット、33–50 MHz、20–30 ns<a href="#ref-35">[35]</a><a href="#ref-36">[36]</a>。</p>
+<p><a id="note-29"></a></p>
+<p>[n 29] 4×32ビット、50 MHz。</p>
+<p><a id="note-30"></a></p>
+<p>[n 30] ポリゴンあたり46回のMAC演算<a href="#ref-15">[15]</a>：1,739,130ポリゴン/秒（SHARC）、147,826ポリゴン/秒（i960）。</p>
+<p><a id="note-31"></a></p>
+<p>[n 31] ポリゴンあたり51回のMAC演算<a href="#ref-15">[15]</a>。</p>
+<p><a id="note-32"></a></p>
+<p>[n 32] ポリゴンあたり62回のMAC演算<a href="#ref-15">[15]</a><a href="#ref-27">[27]</a>：1,290,322ポリゴン/秒（SHARC）、109,677ポリゴン/秒（i960）。</p>
+<p><a id="note-33"></a></p>
+<p>[n 33] フレームあたり2メガピクセル。</p>
+<p><a id="note-34"></a></p>
+<p>[n 34]
+ポリゴンあたり101サイクル（ジオメトリ処理62サイクル、ラスタ演算39回）。走査線4本のポリゴンあたり113サイクル（ポリゴンごとに走査線あたり3演算）<a href="#ref-28">[28]</a><a href="#ref-29">[29]</a>。32ピクセルのポリゴンあたり209サイクル（ピクセルあたり3サイクル）。</p>
+<p><a id="note-35"></a></p>
+<p>[n 35] GPUあたり94メガピクセル/秒<a href="#ref-43">[43]</a>。</p>
+<p><a id="note-36"></a></p>
+<p>[n 36] ポリゴンあたり88サイクル<a href="#ref-44">[44]</a>、ポリゴンあたり266命令（固定小数点）、GPUあたり450,000ポリゴン/秒（150ピクセルのポリゴン）<a href="#ref-45">[45]</a>。</p>
+<p><a id="note-37"></a></p>
+<p>[n 37] ポリゴンあたり272回の浮動小数点演算。</p>
+<p><a id="note-38"></a></p>
+<p>[n 38] ポリゴンあたり151サイクル<a href="#ref-44">[44]</a>。</p>
+<p><a id="note-39"></a></p>
+<p>[n 39] GPUあたり250,000ポリゴン/秒（150ピクセルのポリゴン）<a href="#ref-45">[45]</a>。</p>
+<p><a id="note-40"></a></p>
+<p>[n 40] ポリゴンあたり438回の浮動小数点演算。</p>
+<p><a id="note-41"></a></p>
+<p>[n 41] 130,000台<a href="#ref-50">[50]</a>、1台あたり$15,000<a href="#ref-2">[2]</a><a href="#ref-51">[51]</a>。</p>
+<h2 id="参考文献">参考文献</h2>
+<p><a id="ref-1"></a></p>
+<p>[1] <a href="https://segaretro.org/Mean_Machines_Sega">Mean Machines
+Sega</a>, <a href="https://segaretro.org/index.php?title=File:MeanMachinesSega22UK.pdf&amp;page=93">"August
+1994" (UK; 1994-06-30), 93ページ</a></p>
+<p><a id="ref-2"></a></p>
+<p>[2] <a href="http://www.thg.ru/smoke/19991022/print.html">Second Hand
+Smoke: One up, two down (October 22, 1999)</a></p>
+<p><a id="ref-3"></a></p>
+<p>[3] <a href="https://segaretro.org/Edge">Edge</a>, <a href="https://segaretro.org/index.php?title=File:Edge_UK_009.pdf&amp;page=49">"June
+1994" (UK; 1994-04-28), 49ページ</a></p>
+<p><a id="ref-4"></a></p>
+<p>[4] <a href="http://ign.com/articles/2009/04/21/ign-presents-the-history-of-sega?page=8">IGN
+PRESENTS THE HISTORY OF SEGA (8ページ)</a></p>
+<p><a id="ref-5"></a></p>
+<p>[5] <a href="http://www.gamezero.com/team-0/whats_new/past/news9504.html">Saturn
+maybe not so stellar (Game Zero Magazine)</a></p>
+<p><a id="ref-6"></a></p>
+<p>[6] <a href="https://segaretro.org/index.php?title=File:DaytonaUSA_Model2_Flyer.pdf&amp;page=2">File:DaytonaUSA
+Model2 Flyer.pdf, 2ページ</a></p>
+<p><a id="ref-7"></a></p>
+<p>[7] <a href="https://segaretro.org/index.php?title=File:SSM_UK_02.pdf&amp;page=21">File:SSM_UK_02.pdf,
+21ページ</a></p>
+<p><a id="ref-8"></a></p>
+<p>[8] <a href="https://github.com/mamedev/mame/blob/master/src/mame/drivers/model2.cpp">Sega
+Model 2 (MAME)</a></p>
+<p><a id="ref-9"></a></p>
+<p>[9] <a href="http://www.tvspels-nostalgi.com/pcb_sega.htm">Sega
+PCB</a></p>
+<p><a id="ref-10"></a></p>
+<p>[10] <a href="https://segaretro.org/File:I960_datasheet.pdf">File:I960
+datasheet.pdf</a></p>
+<p><a id="ref-11"></a></p>
+<p>[11] <a href="https://segaretro.org/File:80960KB_datasheet.pdf">File:80960KB
+datasheet.pdf</a></p>
+<p><a id="ref-12"></a></p>
+<p>[12] <a href="https://segaretro.org/index.php?title=File:I960_datasheet.pdf&amp;page=2">File:I960
+datasheet.pdf, 2ページ</a></p>
+<p><a id="ref-13"></a></p>
+<p>[13] <a href="http://pdf.datasheetarchive.com/indexerfiles/Scans-068/DSA2IH00225160.pdf">http://pdf.datasheetarchive.com/indexerfiles/Scans-068/DSA2IH00225160.pdf</a></p>
+<p><a id="ref-14"></a></p>
+<p>[14] <a href="https://segaretro.org/File:ST-077-R2-052594.pdf">File:ST-077-R2-052594.pdf</a></p>
+<p><a id="ref-15"></a></p>
+<p>[15] <a href="https://github.com/mamedev/mame/blob/master/src/mame/video/model2.cpp">Sega
+Model 2 Geometry Engine and 3D Rasterizer (MAME)</a></p>
+<p><a id="ref-16"></a></p>
+<p>[16] <a href="https://segaretro.org/Next_Generation">Next
+Generation</a>, <a href="https://segaretro.org/index.php?title=File:NextGeneration_US_11.pdf&amp;page=16">"November
+1995" (US; 1995-10-24), 16ページ</a></p>
+<p><a id="ref-17"></a></p>
+<p>[17] <a href="http://members.iinet.net.au/~lantra9jp1_nbn/gurudumps/m2status/index.html">Sega
+Model 2 ROM Dump</a></p>
+<p><a id="ref-18"></a></p>
+<p>[18] <a href="https://segaretro.org/File:MB86232_datasheet.pdf">File:MB86232
+datasheet.pdf</a></p>
+<p><a id="ref-19"></a></p>
+<p>[19] <a href="http://wiki.mamedev.org/index.php/TGP:Index">TGP
+(MAME)</a></p>
+<p><a id="ref-20"></a></p>
+<p>[20] <a href="https://segaretro.org/index.php?title=File:MB86232_datasheet.pdf&amp;page=32">File:MB86232
+datasheet.pdf, 32ページ</a></p>
+<p><a id="ref-21"></a></p>
+<p>[21] <a href="http://hico-srv004.pixhotel.fr/sites/default/files/gamoovernet/20110520120039-lapin252-IMG-0112.JPG">Sega
+Model 2 Video Board</a></p>
+<p><a id="ref-22"></a></p>
+<p>[22] <a href="https://github.com/bji/libmame/blob/master/old/src/mame/video/segaic16.c">Sega
+16‑Bit Common Hardware</a>, <a href="https://segaretro.org/MAME">MAME</a></p>
+<p><a id="ref-23"></a></p>
+<p>[23] <a href="https://segaretro.org/Sega_System_24_Hardware_Notes_(2013-06-16)">Sega
+System 24 Hardware Notes (2013-06-16)</a></p>
+<p><a id="ref-24"></a></p>
+<p>[24] <a href="https://segaretro.org/Electronic_Gaming_Monthly">Electronic Gaming
+Monthly</a>, <a href="https://segaretro.org/index.php?title=File:EGM_US_059.pdf&amp;page=68">"June
+1994" (US; 1994-xx-xx), 68ページ</a></p>
+<p><a id="ref-25"></a></p>
+<p>[25] <a href="https://segaretro.org/index.php?title=File:VirtuaFighter2_Model2_Flyer.pdf&amp;page=2">File:VirtuaFighter2
+Model2 Flyer.pdf, 2ページ</a></p>
+<p><a id="ref-26"></a></p>
+<p>[26] <a href="https://segaretro.org/index.php?title=File:MB86232_datasheet.pdf&amp;page=33">File:MB86232
+datasheet.pdf, 33ページ</a></p>
+<p><a id="ref-27"></a></p>
+<p>[27] <a href="https://books.google.co.uk/books?id=iAvHt5RCHbMC&amp;pg=PA95">Design
+of Digital Systems and Devices (95-97ページ)</a></p>
+<p><a id="ref-28"></a></p>
+<p>[28] <a href="http://sirkan.iit.bme.hu/~szirmay/abbas.pdf#page=53">Transformation
+Of Rendering Algorithms For Hardware Implementation (53ページ)</a></p>
+<p><a id="ref-29"></a></p>
+<p>[29] <a href="https://segaretro.org/index.php?title=File:32XUSHardwareManual.pdf&amp;page=76">File:32XUSHardwareManual.pdf,
+76ページ</a></p>
+<p><a id="ref-30"></a></p>
+<p>[30] <a href="https://segaretro.org/index.php?title=File:80960KB_datasheet.pdf&amp;page=7">File:80960KB
+datasheet.pdf, 7ページ</a></p>
+<p><a id="ref-31"></a></p>
+<p>[31] <a href="https://segaretro.org/File:TC5588P_datasheet.pdf">File:TC5588P
+datasheet.pdf</a></p>
+<p><a id="ref-32"></a></p>
+<p>[32] <a href="https://segaretro.org/File:TC518128CPL_datasheet.pdf">File:TC518128CPL
+datasheet.pdf</a></p>
+<p><a id="ref-33"></a></p>
+<p>[33] <a href="https://segaretro.org/File:MB84256A_datasheet.pdf">File:MB84256A
+datasheet.pdf</a></p>
+<p><a id="ref-34"></a></p>
+<p>[34] <a href="http://pdf.datasheetarchive.com/datasheetsmain/Datasheets-39/DSA-764435.pdf">http://pdf.datasheetarchive.com/datasheetsmain/Datasheets-39/DSA-764435.pdf</a></p>
+<p><a id="ref-35"></a></p>
+<p>[35] <a href="https://segaretro.org/File:AM27C1024_datasheet.pdf">File:AM27C1024
+datasheet.pdf</a></p>
+<p><a id="ref-36"></a></p>
+<p>[36] <a href="https://segaretro.org/File:MX27C1024_datasheet.pdf">File:MX27C1024
+datasheet.pdf</a></p>
+<p><a id="ref-37"></a></p>
+<p>[37] <a href="http://mamedb.blu-ferret.co.uk/game/dynamcop">Dynamite
+Cop (MAME)</a></p>
+<p><a id="ref-38"></a></p>
+<p>[38] <a href="https://segaretro.org/File:ADSP-2106_datasheet.pdf">File:ADSP-2106
+datasheet.pdf</a></p>
+<p><a id="ref-39"></a></p>
+<p>[39] <a href="https://segaretro.org/index.php?title=File:ADSP-2106_datasheet.pdf&amp;page=4">File:ADSP-2106
+datasheet.pdf, 4ページ</a></p>
+<p><a id="ref-40"></a></p>
+<p>[40] <a href="https://segaretro.org/File:3DGraphicsProcessorChipSet.pdf">File:3DGraphicsProcessorChipSet.pdf</a></p>
+<p><a id="ref-41"></a></p>
+<p>[41] <a href="https://segaretro.org/index.php?title=File:3DGraphicsProcessorChipSet.pdf&amp;page=4">File:3DGraphicsProcessorChipSet.pdf,
+4ページ</a></p>
+<p><a id="ref-42"></a></p>
+<p>[42] <a href="https://segaretro.org/File:3D-CG_System_with_Video_Texturing.pdf">File:3D-CG
+System with Video Texturing.pdf</a></p>
+<p><a id="ref-43"></a></p>
+<p>[43] <a href="https://segaretro.org/index.php?title=File:3DGraphicsProcessorChipSet.pdf&amp;page=12">File:3DGraphicsProcessorChipSet.pdf,
+12ページ</a></p>
+<p><a id="ref-44"></a></p>
+<p>[44] <a href="https://segaretro.org/index.php?title=File:3DGraphicsProcessorChipSet.pdf&amp;page=8">File:3DGraphicsProcessorChipSet.pdf,
+8ページ</a></p>
+<p><a id="ref-45"></a></p>
+<p>[45] <a href="https://segaretro.org/index.php?title=File:3DGraphicsProcessorChipSet.pdf&amp;page=11">File:3DGraphicsProcessorChipSet.pdf,
+11ページ</a></p>
+<p><a id="ref-46"></a></p>
+<p>[46] <a href="http://archive.is/35o4a">http://www.1up.com/features/disappearance-suzuki-part-1</a>
+(archive.today)</p>
+<p><a id="ref-47"></a></p>
+<p>[47] <a href="http://www.gamasutra.com/view/news/228512/Yu_Suzuki_recalls_using_military_tech_to_make_Virtua_Fighter_2.php">Yu
+Suzuki recalls using military tech to make Virtua Fighter 2</a></p>
+<p><a id="ref-48"></a></p>
+<p>[48] <a href="https://segaretro.org/Electronic_Gaming_Monthly">Electronic Gaming
+Monthly</a>, <a href="https://segaretro.org/index.php?title=File:EGM_US_051.pdf&amp;page=222">"October
+1993" (US; 1993-xx-xx), 222ページ</a></p>
+<p><a id="ref-49"></a></p>
+<p>[49] <a href="https://segaretro.org/Press_release:_1995-03-20:_Lockheed_Martin_3D_Graphics_Accelerator_offers_real-time_PC_visual_system_performance">Press
+release: 1995-03-20: Lockheed Martin 3D Graphics Accelerator offers
+real-time PC visual system performance</a></p>
+<p><a id="ref-50"></a></p>
+<p>[50] <a href="http://web.archive.org/web/19971210083243/http://www.real3d.com/sega.html">http://www.real3d.com/sega.html</a>
+(Wayback Machine: 1997-12-10 08:32)</p>
+<p><a id="ref-51"></a></p>
+<p>[51] <a href="https://web.archive.org/web/20141104190719/http://assemblergames.com/forums/showthread.php?47028-Early-concept-of-Daytona-USA-at-Summer-CES-1993-Not-on-Model-2-but-Compu-Scene">http://assemblergames.com/forums/showthread.php?47028-Early-concept-of-Daytona-USA-at-Summer-CES-1993-Not-on-Model-2-but-Compu-Scene</a>
+(Wayback Machine: 2014-11-04 19:07)</p>
+<p><a id="ref-52"></a></p>
+<p>[52] <a href="https://web.archive.org/web/20210205150032/https://www.4gamer.net/games/999/G999905/20210126043/">https://www.4gamer.net/games/999/G999905/20210126043/</a>
+(Wayback Machine: 2021-02-05 15:00)</p>
+<p><a id="ref-53"></a></p>
+<p>[53] <a href="https://www.youtube.com/watch?v=1CEdmZ5P0jA">https://www.youtube.com/watch?v=1CEdmZ5P0jA</a></p>
+</main><footer><p>日本語版の公開：GOROman。原著：<a href="https://segaretro.org/index.php?title=Sega_Model_2&amp;action=history">Sega Retro contributors</a>。<a href="https://segaretro.org/index.php?title=Sega_Model_2&amp;oldid=1149915">原文の固定版 1149915</a>からの非公式翻訳。翻訳・編集日：2026年10月14日。</p><p>変更：日本語翻訳、見出し・目次・表の再構成、参照リンクの整形、画像・雑誌スキャンの省略。原文の仕様値は保持しています。</p><p>記事・翻訳・本サイトの独自部分は <a href="https://creativecommons.org/licenses/by/4.0/" rel="license">CC BY 4.0</a> で提供します。<a href="LICENSE.txt">ライセンスと帰属表示</a> · <a href="https://github.com/GOROman/sega-model-2-ja">GitHub</a></p></footer></body>
+</html>

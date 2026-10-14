@@ -1,0 +1,23 @@
+Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+The article, its Japanese translation, and original parts of this website
+are licensed under CC BY 4.0.
+License deed: https://creativecommons.org/licenses/by/4.0/
+Legal code: https://creativecommons.org/licenses/by/4.0/legalcode
+
+Original work: Sega Model 2, by Sega Retro contributors.
+Source revision: https://segaretro.org/index.php?title=Sega_Model_2&oldid=1149915
+Contributor history: https://segaretro.org/index.php?title=Sega_Model_2&action=history
+Japanese edition published by GOROman.
+Translation and editing date: 2026-10-14.
+
+This is an unofficial Japanese translation, not an official Sega Retro or Sega publication.
+Changes: Japanese translation; headings, navigation and tables reorganized;
+reference-link formatting repaired; images and magazine scans omitted.
+Technical values from the original are retained, including potentially questionable values.
+This translation is not an independent verification or correction of those values.
+Linked third-party material and images are not covered by this site's license.
+
+You may share and adapt this work, including commercially, under the terms
+of CC BY 4.0. Give appropriate credit, link to the license, and indicate changes.
+See the linked legal code for the complete license terms.
