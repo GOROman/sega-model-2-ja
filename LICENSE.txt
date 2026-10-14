@@ -21,3 +21,9 @@ Linked third-party material and images are not covered by this site's license.
 You may share and adapt this work, including commercially, under the terms
 of CC BY 4.0. Give appropriate credit, link to the license, and indicate changes.
 See the linked legal code for the complete license terms.
+
+Independent analysis addition (2026-10-14): analysis.html, vf2-load-top10-ja.md,
+vf2-independent-analysis-ja.md. These original analysis documents are explicitly
+licensed under CC BY 4.0 by the publisher, GOROman. Source code and third-party
+references cited in them retain their own licenses. The analysis reports retained
+logs and evidence; it does not amend the translated Sega Retro article.
