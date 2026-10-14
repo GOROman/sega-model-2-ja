@@ -27,3 +27,7 @@ vf2-independent-analysis-ja.md. These original analysis documents are explicitly
 licensed under CC BY 4.0 by the publisher, GOROman. Source code and third-party
 references cited in them retain their own licenses. The analysis reports retained
 logs and evidence; it does not amend the translated Sega Retro article.
+
+VF2 Wasm implementation block diagram (2026-10-14), created and published
+by GOROman, is also explicitly provided under CC BY 4.0. This is a software
+architecture summary, not a physical-board wiring diagram.
