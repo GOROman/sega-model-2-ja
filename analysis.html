@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="ja"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/><title>VF2独立技術解析 | Sega Model 2 日本語版</title><meta content="Sega Retroの原文翻訳とは独立したVF2技術解析。診断負荷トップ10、TGPの改善候補、入力判定、原文の検証、68000の計測条件と未確定事項。" name="description"/><link href="style.css" rel="stylesheet"/></head><body class="analysis-page"><nav aria-label="ページの切り替え" class="top"><a href="index.html">Sega Model 2 日本語訳</a><a href="en.html">原文英語</a><a aria-current="page" href="analysis.html">技術解析</a></nav><main><h1>VF2独立技術解析</h1><p>本ページはSega Retroの記事翻訳とは別の独立した解析です。翻訳本文の仕様値は変更せず、訂正候補と検証結果をここに分けて掲載しています。</p><aside aria-label="解析の範囲と留保" class="analysis-notice"><p><strong>負荷トップ10・schedulerの割合は診断ビルドの保存ログです。</strong>現在の通常版のリアルタイム値ではありません。UARTのイベント回数をCPU時間へ換算しません。</p><p><strong>68000の36回の比較測定は完了しました。</strong>同一診断ビルドで計測ONにするとwork時間の組ごとの差は中央値+1.2467%（3スレッド）、+0.9520%（非分離1Worker）。各3組の記述的な結果で、ゼロ負荷や統計的有意差を主張しません。ゲームの公開構成は変更せず、診断機能は既定OFFです。</p><p><strong>TGPの最適化・事前デコードの改善効果は未測定です。</strong>実コード、保存集計、メーカー資料、仮説を各節で区別しています。スマートフォン実機の性能・熱・電力は測定していません。</p></aside><details class="toc-disclosure"><summary>目次を開く — 負荷・TGP・入力判定・原文検証・68000</summary><nav aria-label="解析の目次" id="TOC"><ul><li><a href="#block-diagram-heading">Wasm実装のブロック図</a></li><li><a href="#load-section-0">確定済み詳細ログによる負荷トップ10</a></li><li><a href="#load-section-1">機種・場面・計測方法</a></li><li><a href="#load-section-2">重い処理の順位</a></li><li><a href="#load-section-3">次に調べる範囲</a></li><li><a href="#load-section-4">出典と再現性</a></li><li><a href="#load-section-5">VF2エミュレータの独立解析 — TGP・入力判定・資料の検証</a></li><li><a href="#load-section-6">TGPは最適化できるか</a></li><li><a href="#load-section-7">現在の実装経路</a></li><li><a href="#load-section-8">負荷の実測と分母</a></li><li><a href="#load-section-9">改善候補と安全条件</a></li><li><a href="#load-section-10">技入力・成立・当たり・ガードの解析</a></li><li><a href="#load-section-11">まだ分かっていないこと</a></li><li><a href="#load-section-12">SegaRetro記事の検証メモ</a></li><li><a href="#load-section-13">メーカー資料で確認した矛盾</a></li><li><a href="#load-section-14">有力な単位誤記の推定</a></li><li><a href="#load-section-15">内訳の算術と未解決の差</a></li><li><a href="#load-section-16">エミュレータと物理仕様を分ける</a></li><li><a href="#load-section-17">68000負荷表示との関係</a></li><li><a href="#scheduler-section-0">スケジューラ負荷の解析</a></li><li><a href="#scheduler-section-1">参照した実装と証拠</a></li><li><a href="#scheduler-section-2">1. 22.6079%をどこまで分けられるか</a></li><li><a href="#scheduler-section-3">2. 1フレーム当たりの呼出し・イベント回数</a></li><li><a href="#scheduler-section-4">3. なぜ待機・再スケジュールが発生するか</a></li><li><a href="#scheduler-section-5">4. 既存最適化と不採用実験</a></li><li><a href="#scheduler-section-6">5. 次に安全に調べる候補</a></li><li><a href="#scheduler-section-7">図に用いる接続の範囲</a></li><li><a href="#sound-profile-section-0">68000負荷表示と計測による負荷 — 完了結果</a></li><li><a href="#sound-profile-section-1">何を表示するか</a></li><li><a href="#sound-profile-section-2">ソースと検証</a></li><li><a href="#sound-profile-section-3">測定条件</a></li><li><a href="#sound-profile-section-4">負荷差</a></li><li><a href="#sound-profile-section-5">FPS・間隔・実行速度</a></li><li><a href="#sound-profile-section-6">画面に出る診断値</a></li><li><a href="#sound-profile-section-7">判断と未確認事項</a></li><li><a href="#tgp-section-0">TGPの重い処理と再コンパイル候補</a></li><li><a href="#tgp-section-1">根拠と確認範囲</a></li><li><a href="#tgp-section-2">1. 実測で言える関数別の負荷</a></li><li><a href="#tgp-section-3">2. 命令処理の分類と、費用が発生しそうな箇所</a></li><li><a href="#tgp-section-4">3. 事前デコード・静的再コンパイル・実行時翻訳</a></li><li><a href="#tgp-section-5">4. 最初に追加する診断集計の設計案</a></li><li><a href="#tgp-section-6">採用までに必要な検証と未解決点</a></li></ul></nav></details><details class="analysis-downloads"><summary>解析原稿をMarkdownでダウンロード</summary><ul><li><a download="" href="vf2-load-top10-ja.md">vf2-load-top10-ja.md</a></li><li><a download="" href="vf2-independent-analysis-ja.md">vf2-independent-analysis-ja.md</a></li><li><a download="" href="vf2-scheduler-analysis-ja.md">vf2-scheduler-analysis-ja.md</a></li><li><a download="" href="vf2-68000-profile-ja.md">vf2-68000-profile-ja.md</a></li><li><a download="" href="vf2-tgp-optimization-ja.md">vf2-tgp-optimization-ja.md</a></li></ul></details><section aria-labelledby="block-diagram-heading" id="implementation-block-diagram"><h2 id="block-diagram-heading">Wasm実装のブロック図</h2><p>VF2 Version 2.1向けModel 2Aポートの処理を、データ経路と実行・同期イベントに分けた図です。実機の回路図、チップ数の再現、Worker配置図ではありません。TGPの命令実行と描画側geometry HLEは別の経路です。</p><p><a href="vf2-wasm-block-diagram.svg" rel="noopener" target="_blank">SVGを別画面で開く</a> · <a download="" href="vf2-wasm-block-diagram.svg">SVGをダウンロード</a></p><figure class="block-diagram"><input class="diagram-zoom" id="diagram-zoom" type="checkbox"/><label for="diagram-zoom">拡大表示（横・縦にスクロール）</label><p class="diagram-help" id="diagram-help">スマホでは読みやすい幅で表示します。図の領域をスクロールできます。SVGは拡大しても文字が鮮明です。</p><div aria-describedby="diagram-help" aria-label="VF2 Wasm実装のブロック図" class="diagram-viewport" role="region" tabindex="0"><svg aria-labelledby="diagram-title diagram-desc" class="diagram-svg" height="1280" role="img" viewbox="0 0 1200 1280" width="1200" xmlns="http://www.w3.org/2000/svg"><title id="diagram-title">VF2 Model 2A Wasm実装：データ経路と実行・同期イベント</title><desc id="diagram-desc">Wasmソフトウェアの処理図。i960からTGPへ入力FIFO、TGPからi960へ出力FIFO。UART TxDからSCSP MIDI入力へ、UART readyからi960側IRQへ。SCSPからPCM転送・AudioWorklet再生へ。青実線はデータ・メモリアクセス、紫破線は制御・同期イベント。実機配線図やWorker配置図ではありません。</desc><style>text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif;fill:#152334}.head{font-size:28px;font-weight:700}.label{font-size:23px;font-weight:700}.small{font-size:19px}.edge{font-size:18px;fill:#075cbe}.sync-label{font-size:20px;fill:#6744a0}.box{fill:#fff;stroke:#9ab3cd;stroke-width:2}.data{fill:none;stroke:#075cbe;stroke-width:3}.sync{fill:none;stroke:#7952aa;stroke-width:3;stroke-dasharray:9 6}</style><defs><marker id="data-arrow" markerheight="8" markerwidth="8" orient="auto-start-reverse" refx="9" refy="5" viewbox="0 0 10 10"><path d="M 0 0 L 10 5 L 0 10 z" fill="#075cbe"></path></marker><marker id="sync-arrow" markerheight="8" markerwidth="8" orient="auto-start-reverse" refx="9" refy="5" viewbox="0 0 10 10"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7952aa"></path></marker></defs><rect fill="#f9fbfd" height="1280" width="1200"></rect><rect fill="#eef4fa" height="865" rx="16" stroke="#dce3eb" width="1160" x="20" y="20"></rect><text class="head" x="45" y="65">1. データ経路 — ソフトウェア実装の要約</text><text class="small" x="45" y="100">VF2 Version 2.1 / Model 2A 向けポート。実機の配線・チップ配置図ではありません。</text><g data-node="i960"><rect class="box" height="110" rx="12" width="250" x="60" y="210"></rect><text class="label" x="78" y="245">i960</text><text class="small" x="78" y="276">生成コードで実行</text><text class="small" x="78" y="303">必要時は解釈実行へ</text></g><g data-node="TGP"><rect class="box" height="110" rx="12" width="300" x="420" y="210"></rect><text class="label" x="438" y="245">TGP</text><text class="small" x="438" y="276">MB86234用プログラム</text><text class="small" x="438" y="303">mb86233_deviceで解釈</text></g><g data-node="UART"><rect class="box" height="110" rx="12" width="285" x="850" y="210"></rect><text class="label" x="868" y="245">UART</text><text class="small" x="868" y="276">i8251送信側の実装</text><text class="small" x="868" y="303">SCSPへの音声コマンド</text></g><g data-node="共有バッファ"><rect class="box" height="100" rx="12" width="315" x="150" y="410"></rect><text class="label" x="168" y="445">共有バッファ</text><text class="small" x="168" y="476">i960 / TGP のアクセス</text></g><g data-node="geometry HLE"><rect class="box" height="100" rx="12" width="250" x="555" y="410"></rect><text class="label" x="573" y="445">geometry HLE</text><text class="small" x="573" y="476">Model 2 / 2A用</text></g><g data-node="3D描画"><rect class="box" height="110" rx="12" width="250" x="555" y="570"></rect><text class="label" x="573" y="605">3D描画</text><text class="small" x="573" y="636">Z-sort・クリップ</text><text class="small" x="573" y="663">ソフトウェア描画</text></g><g data-node="2Dタイル"><rect class="box" height="100" rx="12" width="260" x="150" y="710"></rect><text class="label" x="168" y="745">2Dタイル</text><text class="small" x="168" y="776">ホスト側のタイル描画</text></g><g data-node="合成・色変換"><rect class="box" height="100" rx="12" width="250" x="555" y="710"></rect><text class="label" x="573" y="745">合成・色変換</text><text class="small" x="573" y="776">3Dと2Dから画面出力</text></g><g data-node="SCSP"><rect class="box" height="110" rx="12" width="285" x="850" y="410"></rect><text class="label" x="868" y="445">SCSP</text><text class="small" x="868" y="476">MIDI入力・レジスタ</text><text class="small" x="868" y="503">音声処理</text></g><g data-node="68000"><rect class="box" height="110" rx="12" width="285" x="850" y="600"></rect><text class="label" x="868" y="635">68000</text><text class="small" x="868" y="666">サウンドCPU実行</text><text class="small" x="868" y="693">SCSPレジスタを操作</text></g><path class="data" d="M 185 210 L 185 160 L 992 160 L 992 210" marker-end="url(#data-arrow)"></path><text class="edge" x="815" y="185">音声コマンド</text><path class="data" d="M 185 320 L 185 410" marker-end="url(#data-arrow)"></path><text class="edge" x="198" y="370">書き込み</text><path class="data" d="M 570 320 L 570 365 L 415 365 L 415 410" marker-end="url(#data-arrow)" marker-start="url(#data-arrow)"></path><text class="edge" x="435" y="349">読出し／書込み</text><path class="data" d="M 465 460 L 555 460" marker-end="url(#data-arrow)"></path><text class="edge" x="475" y="445">描画データ</text><path class="data" d="M 680 510 L 680 570" marker-end="url(#data-arrow)"></path><path class="data" d="M 680 680 L 680 710" marker-end="url(#data-arrow)"></path><path class="data" d="M 410 760 L 555 760" marker-end="url(#data-arrow)"></path><text class="edge" x="426" y="742">2D画像</text><path class="data" d="M 680 810 L 680 845" marker-end="url(#data-arrow)"></path><text class="edge" x="697" y="846">画面送信へ</text><path class="data" d="M 992 320 L 992 410" marker-end="url(#data-arrow)"></path><text class="edge" x="1006" y="370">MIDI入力</text><path class="data" d="M 1100 520 L 1100 600" marker-end="url(#data-arrow)" marker-start="url(#data-arrow)"></path><text class="edge" x="850" y="567">レジスタ read / write</text><text class="small" x="60" y="875">TGP命令実行とgeometry HLEは別。TGP → geometry の直結は描いていません。</text><rect fill="#f3eef9" height="255" rx="16" stroke="#d8cce9" width="1160" x="20" y="910"></rect><text class="head" x="45" y="955">2. 実行・同期イベント — データ経路とは別の関係</text><g data-node="スケジューラー"><rect class="box" height="115" rx="12" width="310" x="60" y="1000"></rect><text class="label" x="78" y="1035">スケジューラー</text><text class="small" x="78" y="1066">CPU予算・sliceを調停</text><text class="small" x="78" y="1093">時刻とタイマーを管理</text></g><g data-node="i960・TGP・68000"><rect class="box" height="75" rx="12" width="610" x="525" y="980"></rect><text class="label" x="543" y="1015">i960・TGP・68000</text><text class="small" x="543" y="1046">実行予算を割り当て、各CPUを実行</text></g><g data-node="UART・SCSP・描画のタイマー"><rect class="box" height="75" rx="12" width="610" x="525" y="1075"></rect><text class="label" x="543" y="1110">UART・SCSP・描画のタイマー</text><text class="small" x="543" y="1141">タイマー発火／FIFO empty・full の同期</text></g><path class="sync" d="M 370 1030 L 450 1030 L 450 1018 L 525 1018" marker-end="url(#sync-arrow)"></path><path class="sync" d="M 370 1080 L 450 1080 L 450 1112 L 525 1112" marker-end="url(#sync-arrow)"></path><path class="data" d="M 45 1210 L 125 1210" marker-end="url(#data-arrow)"></path><text class="small" x="145" y="1217">青実線：データ／メモリアクセス</text><path class="sync" d="M 655 1210 L 735 1210" marker-end="url(#sync-arrow)"></path><text class="small" x="755" y="1217">紫破線：実行／同期・IRQ</text><text class="small" x="45" y="1255">双方向矢印はアクセス方向を要約。ブロック数・矢印幅はWorker数や負荷率を表しません。</text><path class="data" d="M 310 245 L 420 245" marker-end="url(#data-arrow)"></path><text class="edge" x="320" y="236">入力FIFO</text><path class="data" d="M 420 285 L 310 285" marker-end="url(#data-arrow)"></path><text class="edge" x="320" y="311">出力FIFO</text><path class="sync" d="M 850 235 L 780 235 L 780 135 L 40 135 L 40 280 L 60 280" marker-end="url(#sync-arrow)"></path><text class="sync-label" x="435" y="126">UART ready → i960側IRQ</text><g data-node="PCM→AudioWorklet"><rect class="box" height="95" rx="12" width="285" x="850" y="760"></rect><text class="label" x="868" y="795">PCM → AudioWorklet</text><text class="small" x="868" y="826">PCM転送・ブラウザ再生</text></g><path class="data" d="M 1135 465 L 1155 465 L 1155 807 L 1135 807" marker-end="url(#data-arrow)"></path></svg></div><figcaption>青実線＝データ・メモリアクセス。紫破線＝実行・同期・IRQ。入力FIFOはi960→TGP、出力FIFOはTGP→i960。矢印の太さは負荷を表しません。</figcaption></figure><p><strong>負荷表の「scheduler・UART・その内部に残る処理」約22.6%は、UART単独の負荷ではありません。</strong>これは関数境界を保持した診断ビルドの排他的サンプル分類であり、現在の通常版のリアルタイム値でもありません。</p><details><summary>図の根拠・省略範囲</summary><p>解析原稿のソース基準コミット <code>88af23fa8fb90963c81605bf9cb1ebc77df00310</code> の実装を読み取り確認しました。位置はソース内の識別情報で、公開リポジトリのURLではありません。</p><ul><li>i960↔TGPのFIFO、共有バッファ、CPU実行予算、描画タイマー：<code>model2a.cpp</code> の <code>tgp_bus</code>、<code>copro_fifo_w</code>、<code>timeslice</code>、タイマー処理。</li><li>geometry HLEと3D描画・合成：<code>model2_video.cpp</code> の <code>geo_parse</code>、<code>frame_end</code>、<code>composite</code> と <code>model2a.cpp</code> の <code>draw_2d</code>。</li><li>音声コマンド系：i960側のUART書き込みから <code>uart_txd</code>／<code>link_event</code> を通じてSCSPのMIDI入力へ。68000バスはSCSPレジスタをread／writeします。音声データを68000経由で出力する矢印にはしていません。</li></ul><p>バス・FIFOの詳細、割り込みの全経路、遅延・停止／再開の細部、CPUとTGPのゲーム判定分担、ホストの描画スレッド配置は省略しています。図は実機の全接続を証明するものではありません。基準コミット以後の実装変更や未検証の接続を推測で追加していません。既存の原稿・資料は以下の各節をご覧ください。</p></details><p>図の編集日：2026年10月14日 UTC。作成・公開：GOROman。図も <a href="https://creativecommons.org/licenses/by/4.0/" rel="license">CC BY 4.0</a> で提供します。</p><p>最終解析への照合：UART TxD→SCSP MIDI入力、UART ready→i960側IRQ、SCSP→PCM転送→AudioWorklet再生を明示しました。根拠は <a href="#scheduler-section-7">スケジューラ解析の「図に用いる接続の範囲」</a>（静的確認基準コミット988b0954f4cd75ad6ba8673ce25a8429e3dffbed）。別診断のUARTイベント回数を時間や転送バイト数へ換算しません。</p></section><h2 id="load-section-0">確定済み詳細ログによる負荷トップ10</h2>
+<html lang="ja"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/><title>VF2独立技術解析 | Sega Model 2 日本語版</title><meta content="Sega Retroの原文翻訳とは独立したVF2技術解析。診断負荷トップ10、TGPの改善候補、入力判定、原文の検証、68000の計測条件と未確定事項。" name="description"/><link href="style.css" rel="stylesheet"/></head><body class="analysis-page"><nav aria-label="ページの切り替え" class="top"><a href="index.html">Sega Model 2 日本語訳</a><a href="en.html">原文英語</a><a aria-current="page" href="analysis.html">技術解析</a></nav><main><h1>VF2独立技術解析</h1><p>本ページはSega Retroの記事翻訳とは別の独立した解析です。翻訳本文の仕様値は変更せず、訂正候補と検証結果をここに分けて掲載しています。</p><aside aria-label="解析の範囲と留保" class="analysis-notice"><p><strong>負荷トップ10・schedulerの割合は診断ビルドの保存ログです。</strong>現在の通常版のリアルタイム値ではありません。UARTのイベント回数をCPU時間へ換算しません。</p><p><strong>68000の36回の比較測定は完了しました。</strong>同一診断ビルドで計測ONにするとwork時間の組ごとの差は中央値+1.2467%（3スレッド）、+0.9520%（非分離1Worker）。各3組の記述的な結果で、ゼロ負荷や統計的有意差を主張しません。ゲームの公開構成は変更せず、診断機能は既定OFFです。</p><p><strong>TGPの最適化・事前デコードの改善効果は未測定です。</strong>実コード、保存集計、メーカー資料、仮説を各節で区別しています。スマートフォン実機の性能・熱・電力は測定していません。</p><p><strong>タイル処理の確認試験は、work削減率のペア中央値0.9825%（3スレッド）／0.6933%（1Worker）。</strong> デスクトップでの各5ペアの結果です。1Workerには悪化した1ペアも含み、統計的有意差やスマホ実機のFPS改善は主張しません。明示的なローカル利用に限定して採用し、既定OFFを維持します。</p></aside><details class="toc-disclosure"><summary>目次を開く — 負荷・TGP・入力判定・原文検証・68000</summary><nav aria-label="解析の目次" id="TOC"><ul><li><a href="#block-diagram-heading">Wasm実装のブロック図</a></li><li><a href="#load-section-0">確定済み詳細ログによる負荷トップ10</a></li><li><a href="#load-section-1">機種・場面・計測方法</a></li><li><a href="#load-section-2">重い処理の順位</a></li><li><a href="#load-section-3">次に調べる範囲</a></li><li><a href="#load-section-4">出典と再現性</a></li><li><a href="#load-section-5">VF2エミュレータの独立解析 — TGP・入力判定・資料の検証</a></li><li><a href="#load-section-6">TGPは最適化できるか</a></li><li><a href="#load-section-7">現在の実装経路</a></li><li><a href="#load-section-8">負荷の実測と分母</a></li><li><a href="#load-section-9">改善候補と安全条件</a></li><li><a href="#load-section-10">技入力・成立・当たり・ガードの解析</a></li><li><a href="#load-section-11">まだ分かっていないこと</a></li><li><a href="#load-section-12">SegaRetro記事の検証メモ</a></li><li><a href="#load-section-13">メーカー資料で確認した矛盾</a></li><li><a href="#load-section-14">有力な単位誤記の推定</a></li><li><a href="#load-section-15">内訳の算術と未解決の差</a></li><li><a href="#load-section-16">エミュレータと物理仕様を分ける</a></li><li><a href="#load-section-17">68000負荷表示との関係</a></li><li><a href="#scheduler-section-0">スケジューラ負荷の解析</a></li><li><a href="#scheduler-section-1">参照した実装と証拠</a></li><li><a href="#scheduler-section-2">1. 22.6079%をどこまで分けられるか</a></li><li><a href="#scheduler-section-3">2. 1フレーム当たりの呼出し・イベント回数</a></li><li><a href="#scheduler-section-4">3. なぜ待機・再スケジュールが発生するか</a></li><li><a href="#scheduler-section-5">4. 既存最適化と不採用実験</a></li><li><a href="#scheduler-section-6">5. 次に安全に調べる候補</a></li><li><a href="#scheduler-section-7">図に用いる接続の範囲</a></li><li><a href="#sound-profile-section-0">68000負荷表示と計測による負荷 — 完了結果</a></li><li><a href="#sound-profile-section-1">何を表示するか</a></li><li><a href="#sound-profile-section-2">ソースと検証</a></li><li><a href="#sound-profile-section-3">測定条件</a></li><li><a href="#sound-profile-section-4">負荷差</a></li><li><a href="#sound-profile-section-5">FPS・間隔・実行速度</a></li><li><a href="#sound-profile-section-6">画面に出る診断値</a></li><li><a href="#sound-profile-section-7">判断と未確認事項</a></li><li><a href="#tgp-section-0">TGPの重い処理と再コンパイル候補</a></li><li><a href="#tgp-section-1">根拠と確認範囲</a></li><li><a href="#tgp-section-2">1. 実測で言える関数別の負荷</a></li><li><a href="#tgp-section-3">2. 命令処理の分類と、費用が発生しそうな箇所</a></li><li><a href="#tgp-section-4">3. 事前デコード・静的再コンパイル・実行時翻訳</a></li><li><a href="#tgp-section-5">4. 最初に追加する診断集計の設計案</a></li><li><a href="#tgp-section-6">採用までに必要な検証と未解決点</a></li><li><a href="#tile-section-0">タイルwindow maskの8ピクセル処理：実測結果と採用範囲</a></li><li><a href="#tile-section-1">変更と比較対象</a></li><li><a href="#tile-section-2">測定条件</a></li><li><a href="#tile-section-3">ペア比較の結果</a></li><li><a href="#tile-section-4">FPS・間隔・work・実行速度</a></li><li><a href="#tile-section-5">回帰検証</a></li><li><a href="#tile-section-6">不利な結果と未確認事項</a></li><li><a href="#tile-section-7">出典の識別</a></li></ul></nav></details><details class="analysis-downloads"><summary>解析原稿をMarkdownでダウンロード</summary><ul><li><a download="" href="vf2-load-top10-ja.md">vf2-load-top10-ja.md</a></li><li><a download="" href="vf2-independent-analysis-ja.md">vf2-independent-analysis-ja.md</a></li><li><a download="" href="vf2-scheduler-analysis-ja.md">vf2-scheduler-analysis-ja.md</a></li><li><a download="" href="vf2-68000-profile-ja.md">vf2-68000-profile-ja.md</a></li><li><a download="" href="vf2-tgp-optimization-ja.md">vf2-tgp-optimization-ja.md</a></li><li><a download="" href="vf2-tile-spans-ja.md">vf2-tile-spans-ja.md</a></li></ul></details><section aria-labelledby="block-diagram-heading" id="implementation-block-diagram"><h2 id="block-diagram-heading">Wasm実装のブロック図</h2><p>VF2 Version 2.1向けModel 2Aポートの処理を、データ経路と実行・同期イベントに分けた図です。実機の回路図、チップ数の再現、Worker配置図ではありません。TGPの命令実行と描画側geometry HLEは別の経路です。</p><p><a href="vf2-wasm-block-diagram.svg" rel="noopener" target="_blank">SVGを別画面で開く</a> · <a download="" href="vf2-wasm-block-diagram.svg">SVGをダウンロード</a></p><figure class="block-diagram"><input class="diagram-zoom" id="diagram-zoom" type="checkbox"/><label for="diagram-zoom">拡大表示（横・縦にスクロール）</label><p class="diagram-help" id="diagram-help">スマホでは読みやすい幅で表示します。図の領域をスクロールできます。SVGは拡大しても文字が鮮明です。</p><div aria-describedby="diagram-help" aria-label="VF2 Wasm実装のブロック図" class="diagram-viewport" role="region" tabindex="0"><svg aria-labelledby="diagram-title diagram-desc" class="diagram-svg" height="1280" role="img" viewbox="0 0 1200 1280" width="1200" xmlns="http://www.w3.org/2000/svg"><title id="diagram-title">VF2 Model 2A Wasm実装：データ経路と実行・同期イベント</title><desc id="diagram-desc">Wasmソフトウェアの処理図。i960からTGPへ入力FIFO、TGPからi960へ出力FIFO。UART TxDからSCSP MIDI入力へ、UART readyからi960側IRQへ。SCSPからPCM転送・AudioWorklet再生へ。青実線はデータ・メモリアクセス、紫破線は制御・同期イベント。実機配線図やWorker配置図ではありません。</desc><style>text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif;fill:#152334}.head{font-size:28px;font-weight:700}.label{font-size:23px;font-weight:700}.small{font-size:19px}.edge{font-size:18px;fill:#075cbe}.sync-label{font-size:20px;fill:#6744a0}.box{fill:#fff;stroke:#9ab3cd;stroke-width:2}.data{fill:none;stroke:#075cbe;stroke-width:3}.sync{fill:none;stroke:#7952aa;stroke-width:3;stroke-dasharray:9 6}</style><defs><marker id="data-arrow" markerheight="8" markerwidth="8" orient="auto-start-reverse" refx="9" refy="5" viewbox="0 0 10 10"><path d="M 0 0 L 10 5 L 0 10 z" fill="#075cbe"></path></marker><marker id="sync-arrow" markerheight="8" markerwidth="8" orient="auto-start-reverse" refx="9" refy="5" viewbox="0 0 10 10"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7952aa"></path></marker></defs><rect fill="#f9fbfd" height="1280" width="1200"></rect><rect fill="#eef4fa" height="865" rx="16" stroke="#dce3eb" width="1160" x="20" y="20"></rect><text class="head" x="45" y="65">1. データ経路 — ソフトウェア実装の要約</text><text class="small" x="45" y="100">VF2 Version 2.1 / Model 2A 向けポート。実機の配線・チップ配置図ではありません。</text><g data-node="i960"><rect class="box" height="110" rx="12" width="250" x="60" y="210"></rect><text class="label" x="78" y="245">i960</text><text class="small" x="78" y="276">生成コードで実行</text><text class="small" x="78" y="303">必要時は解釈実行へ</text></g><g data-node="TGP"><rect class="box" height="110" rx="12" width="300" x="420" y="210"></rect><text class="label" x="438" y="245">TGP</text><text class="small" x="438" y="276">MB86234用プログラム</text><text class="small" x="438" y="303">mb86233_deviceで解釈</text></g><g data-node="UART"><rect class="box" height="110" rx="12" width="285" x="850" y="210"></rect><text class="label" x="868" y="245">UART</text><text class="small" x="868" y="276">i8251送信側の実装</text><text class="small" x="868" y="303">SCSPへの音声コマンド</text></g><g data-node="共有バッファ"><rect class="box" height="100" rx="12" width="315" x="150" y="410"></rect><text class="label" x="168" y="445">共有バッファ</text><text class="small" x="168" y="476">i960 / TGP のアクセス</text></g><g data-node="geometry HLE"><rect class="box" height="100" rx="12" width="250" x="555" y="410"></rect><text class="label" x="573" y="445">geometry HLE</text><text class="small" x="573" y="476">Model 2 / 2A用</text></g><g data-node="3D描画"><rect class="box" height="110" rx="12" width="250" x="555" y="570"></rect><text class="label" x="573" y="605">3D描画</text><text class="small" x="573" y="636">Z-sort・クリップ</text><text class="small" x="573" y="663">ソフトウェア描画</text></g><g data-node="2Dタイル"><rect class="box" height="100" rx="12" width="260" x="150" y="710"></rect><text class="label" x="168" y="745">2Dタイル</text><text class="small" x="168" y="776">ホスト側のタイル描画</text></g><g data-node="合成・色変換"><rect class="box" height="100" rx="12" width="250" x="555" y="710"></rect><text class="label" x="573" y="745">合成・色変換</text><text class="small" x="573" y="776">3Dと2Dから画面出力</text></g><g data-node="SCSP"><rect class="box" height="110" rx="12" width="285" x="850" y="410"></rect><text class="label" x="868" y="445">SCSP</text><text class="small" x="868" y="476">MIDI入力・レジスタ</text><text class="small" x="868" y="503">音声処理</text></g><g data-node="68000"><rect class="box" height="110" rx="12" width="285" x="850" y="600"></rect><text class="label" x="868" y="635">68000</text><text class="small" x="868" y="666">サウンドCPU実行</text><text class="small" x="868" y="693">SCSPレジスタを操作</text></g><path class="data" d="M 185 210 L 185 160 L 992 160 L 992 210" marker-end="url(#data-arrow)"></path><text class="edge" x="815" y="185">音声コマンド</text><path class="data" d="M 185 320 L 185 410" marker-end="url(#data-arrow)"></path><text class="edge" x="198" y="370">書き込み</text><path class="data" d="M 570 320 L 570 365 L 415 365 L 415 410" marker-end="url(#data-arrow)" marker-start="url(#data-arrow)"></path><text class="edge" x="435" y="349">読出し／書込み</text><path class="data" d="M 465 460 L 555 460" marker-end="url(#data-arrow)"></path><text class="edge" x="475" y="445">描画データ</text><path class="data" d="M 680 510 L 680 570" marker-end="url(#data-arrow)"></path><path class="data" d="M 680 680 L 680 710" marker-end="url(#data-arrow)"></path><path class="data" d="M 410 760 L 555 760" marker-end="url(#data-arrow)"></path><text class="edge" x="426" y="742">2D画像</text><path class="data" d="M 680 810 L 680 845" marker-end="url(#data-arrow)"></path><text class="edge" x="697" y="846">画面送信へ</text><path class="data" d="M 992 320 L 992 410" marker-end="url(#data-arrow)"></path><text class="edge" x="1006" y="370">MIDI入力</text><path class="data" d="M 1100 520 L 1100 600" marker-end="url(#data-arrow)" marker-start="url(#data-arrow)"></path><text class="edge" x="850" y="567">レジスタ read / write</text><text class="small" x="60" y="875">TGP命令実行とgeometry HLEは別。TGP → geometry の直結は描いていません。</text><rect fill="#f3eef9" height="255" rx="16" stroke="#d8cce9" width="1160" x="20" y="910"></rect><text class="head" x="45" y="955">2. 実行・同期イベント — データ経路とは別の関係</text><g data-node="スケジューラー"><rect class="box" height="115" rx="12" width="310" x="60" y="1000"></rect><text class="label" x="78" y="1035">スケジューラー</text><text class="small" x="78" y="1066">CPU予算・sliceを調停</text><text class="small" x="78" y="1093">時刻とタイマーを管理</text></g><g data-node="i960・TGP・68000"><rect class="box" height="75" rx="12" width="610" x="525" y="980"></rect><text class="label" x="543" y="1015">i960・TGP・68000</text><text class="small" x="543" y="1046">実行予算を割り当て、各CPUを実行</text></g><g data-node="UART・SCSP・描画のタイマー"><rect class="box" height="75" rx="12" width="610" x="525" y="1075"></rect><text class="label" x="543" y="1110">UART・SCSP・描画のタイマー</text><text class="small" x="543" y="1141">タイマー発火／FIFO empty・full の同期</text></g><path class="sync" d="M 370 1030 L 450 1030 L 450 1018 L 525 1018" marker-end="url(#sync-arrow)"></path><path class="sync" d="M 370 1080 L 450 1080 L 450 1112 L 525 1112" marker-end="url(#sync-arrow)"></path><path class="data" d="M 45 1210 L 125 1210" marker-end="url(#data-arrow)"></path><text class="small" x="145" y="1217">青実線：データ／メモリアクセス</text><path class="sync" d="M 655 1210 L 735 1210" marker-end="url(#sync-arrow)"></path><text class="small" x="755" y="1217">紫破線：実行／同期・IRQ</text><text class="small" x="45" y="1255">双方向矢印はアクセス方向を要約。ブロック数・矢印幅はWorker数や負荷率を表しません。</text><path class="data" d="M 310 245 L 420 245" marker-end="url(#data-arrow)"></path><text class="edge" x="320" y="236">入力FIFO</text><path class="data" d="M 420 285 L 310 285" marker-end="url(#data-arrow)"></path><text class="edge" x="320" y="311">出力FIFO</text><path class="sync" d="M 850 235 L 780 235 L 780 135 L 40 135 L 40 280 L 60 280" marker-end="url(#sync-arrow)"></path><text class="sync-label" x="435" y="126">UART ready → i960側IRQ</text><g data-node="PCM→AudioWorklet"><rect class="box" height="95" rx="12" width="285" x="850" y="760"></rect><text class="label" x="868" y="795">PCM → AudioWorklet</text><text class="small" x="868" y="826">PCM転送・ブラウザ再生</text></g><path class="data" d="M 1135 465 L 1155 465 L 1155 807 L 1135 807" marker-end="url(#data-arrow)"></path></svg></div><figcaption>青実線＝データ・メモリアクセス。紫破線＝実行・同期・IRQ。入力FIFOはi960→TGP、出力FIFOはTGP→i960。矢印の太さは負荷を表しません。</figcaption></figure><p><strong>負荷表の「scheduler・UART・その内部に残る処理」約22.6%は、UART単独の負荷ではありません。</strong>これは関数境界を保持した診断ビルドの排他的サンプル分類であり、現在の通常版のリアルタイム値でもありません。</p><details><summary>図の根拠・省略範囲</summary><p>解析原稿のソース基準コミット <code>88af23fa8fb90963c81605bf9cb1ebc77df00310</code> の実装を読み取り確認しました。位置はソース内の識別情報で、公開リポジトリのURLではありません。</p><ul><li>i960↔TGPのFIFO、共有バッファ、CPU実行予算、描画タイマー：<code>model2a.cpp</code> の <code>tgp_bus</code>、<code>copro_fifo_w</code>、<code>timeslice</code>、タイマー処理。</li><li>geometry HLEと3D描画・合成：<code>model2_video.cpp</code> の <code>geo_parse</code>、<code>frame_end</code>、<code>composite</code> と <code>model2a.cpp</code> の <code>draw_2d</code>。</li><li>音声コマンド系：i960側のUART書き込みから <code>uart_txd</code>／<code>link_event</code> を通じてSCSPのMIDI入力へ。68000バスはSCSPレジスタをread／writeします。音声データを68000経由で出力する矢印にはしていません。</li></ul><p>バス・FIFOの詳細、割り込みの全経路、遅延・停止／再開の細部、CPUとTGPのゲーム判定分担、ホストの描画スレッド配置は省略しています。図は実機の全接続を証明するものではありません。基準コミット以後の実装変更や未検証の接続を推測で追加していません。既存の原稿・資料は以下の各節をご覧ください。</p></details><p>図の編集日：2026年10月14日 UTC。作成・公開：GOROman。図も <a href="https://creativecommons.org/licenses/by/4.0/" rel="license">CC BY 4.0</a> で提供します。</p><p>最終解析への照合：UART TxD→SCSP MIDI入力、UART ready→i960側IRQ、SCSP→PCM転送→AudioWorklet再生を明示しました。根拠は <a href="#scheduler-section-7">スケジューラ解析の「図に用いる接続の範囲」</a>（静的確認基準コミット988b0954f4cd75ad6ba8673ce25a8429e3dffbed）。別診断のUARTイベント回数を時間や転送バイト数へ換算しません。</p></section><h2 id="load-section-0">確定済み詳細ログによる負荷トップ10</h2>
 <p>更新日: 2026-10-14 UTC。これはVF2のWasm移植で保存した最新の確定済み<strong>詳細分類</strong>を再掲したもので、現在のライブ負荷ではない。以後の通常速度の測定は別に存在するが、同じ細かさの分類ではない。SegaRetro原文・翻訳とも別の独立解析である。</p>
 <h3 id="load-section-1">機種・場面・計測方法</h3>
 <p>Apple M3 Ultra、Darwin 25.3.0、Chromium 147.0.7727.15、390×844のデスクトップ画面、実際のWorker数1。音声CPUはON、ライブAudioWorklet再生はOFF、通常フレームペーシングはOFF。戦闘の元フレーム2000–2599、3回。</p>
@@ -984,4 +984,227 @@
 <p>既存の診断検証では4リプレイ合計10,400フレームの画像・PCM比較と104選択状態チェックポイントが一致しているが、TGP内部を命令単位で比較した検証ではない。新しいTGP変換の採用には、元の解釈実行を独立した参照経路として残し、TGPのレジスタ・フラグ・ALU一時状態・PCスタック・repeat状態・内部RAM・program・bank／table状態に加え、FIFO本体とextra、同期フラグ、CPU停止状態と時刻、タイマー順を同じゲスト時点で比較する必要がある。比較用の実値は公開せず、成否と最初の不一致の分類を報告する。</p>
 <p>重点ケースは、空入力FIFO、満杯出力FIFO、slice残量が小さいときの浮動小数命令、I/O途中のabort、直接／間接分岐、repeat、reset、短い再アップロードと折返し、programのデータ読出し、未対応命令のfallbackである。数値の端ケースは現コアと実機仕様の未解明点を分け、変換だけの変更で既存意味を直したことにしない。</p>
 <p>正しさの確認後、診断を外して同じ場面・入力・音声状態・描画・ブラウザで対照と候補を交互に測る。起動時の変換／コンパイル時間、定常work時間、実行速度、提示FPSとフレーム時間、メモリ増分も別々に記録する。スマホ実機の持続性能は独立した検証が必要である。現在未知なのは命令別頻度・ホスト費用、デコードや仮想呼出しの実コスト、各変換方式の利益と追加負荷、未測定場面でのprogram更新、実機での持続性能である。</p>
+<h2 id="tile-section-0">タイルwindow maskの8ピクセル処理：実測結果と採用範囲</h2>
+<p>2026-10-14。<strong>確認試験の総処理時間（work）のペア内削減率中央値は、実3スレッドで0.9825%、通常の1Workerで0.6933%。検証済み実装を明示的に有効にするローカル利用に限って採用し、既定値はOFFのままにした。</strong> これはデスクトップでの小さい処理時間改善であり、スマホ実機のFPS改善や一般向け既定設定への昇格を示すものではない。</p>
+<p>本資料は既存レポートと保存済み数値を公開用に整理したもの。新しいビルド・ゲーム実行・性能測定は行っていない。ROM、生成ゲストコード、非公開ログ本文、端末の個人情報やアクセス先は含めない。</p>
+<h3 id="tile-section-1">変更と比較対象</h3>
+<p>実装・ビルド・測定ソースは<code>cfb6ea76a9c034ce66d39df9d5eec9d5ff4874ca</code>、結果を記録したコミットは<code>88af23f</code>。<code>segas24_tile::draw_rect</code>のwindow maskは1bitが8ピクセル、16bitが128ピクセルを覆う。そのまとまりで判定し、マスクされる範囲の各ポインタを元と同じ量だけ進める。表示するピクセルの透明・優先度・palette・反転・座標記録を保持する。</p>
+<p>制御は<code>VF2_TILE_MASK_SPANS=0/1</code>だけを変える。新しいframeやtexelのcacheは追加せず、CPU・デバイス・音声・描画frameを間引かない。既存のclip・scroll・split経路も保持する。OFF側のクラスは変更前<code>0c26969</code>と同一で、OFFのWasmとloaderは両実行経路で以前の対照とバイト一致する。候補Wasmは経路ごとに1,447バイト増加し、各17個のUIファイルは対照と一致した。</p>
+<h3 id="tile-section-2">測定条件</h3>
+<p class="table-hint">狭い画面では表を横にスクロールできます。</p><div aria-label="タイル改善の測定条件と結果" class="table-scroll" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th scope="col">項目</th>
+<th scope="col">条件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>端末</td>
+<td>Apple M3 Ultra、Darwin 25.3.0</td>
+</tr>
+<tr>
+<td>ブラウザ</td>
+<td>Playwright WebKit 26.4、headless desktop、viewport390×844</td>
+</tr>
+<tr>
+<td>コンパイラ</td>
+<td>Emscripten4.0.20、O3・LTO・SIMD</td>
+</tr>
+<tr>
+<td>実行経路</td>
+<td>実際に3スレッドを使うpthread経路、通常の1Worker互換経路を別集計</td>
+</tr>
+<tr>
+<td>場面</td>
+<td>resetから同じ入力で進め、戦闘の原フレーム2000–2599を測定。1run600測定フレーム</td>
+</tr>
+<tr>
+<td>再生</td>
+<td>通常の基板速度へペーシング。音声CPUとlive AudioWorkletを有効</td>
+</tr>
+<tr>
+<td>比較</td>
+<td>各経路5ペア×2cohort。1cohort20run、合計40run。各runは新しいブラウザから開始</td>
+</tr>
+<tr>
+<td>順序</td>
+<td>初回は奇数ペアで対照を先にし、偶数で逆。確認cohortではペア内順序を反転</td>
+</tr>
+<tr>
+<td>初回時刻</td>
+<td>2026-10-14 19:47:19.281–20:02:45.662 UTC</td>
+</tr>
+<tr>
+<td>確認時刻</td>
+<td>2026-10-14 20:02:45.755–20:18:12.031 UTC</td>
+</tr>
+<tr>
+<td>他の実験</td>
+<td>mip再利用、2種のcycle除算実験、詳細性能計装はOFF。イベント監査用ビルドは性能測定と別</td>
+</tr>
+<tr>
+<td>実行管理</td>
+<td>計画を先に保存。測定中に他のビルド・検証試験を実行せず、全40runを保持。途中打切り・不利なrunの除外なし</td>
+</tr>
+</tbody>
+</table></div>
+<p>390×844は表示領域の設定で、スマホ実機を意味しない。物理コントローラーも未検証。workはブラウザ側のframe処理で、Worker実行・往復、画像/音声の処理、Canvas提出などを含む。フレーム間隔はペーシング込みの別指標で、Canvas提出は物理scanoutの完了を証明しない。</p>
+<h3 id="tile-section-3">ペア比較の結果</h3>
+<p>正の削減率は候補が速いことを表す。各ペアで<code>100×(対照work−候補work)/対照work</code>を計算し、5ペアの中央値を取った。群ごとの時間中央値を割って求めた値ではない。</p>
+<p class="table-hint">狭い画面では表を横にスクロールできます。</p><div aria-label="タイル改善の測定条件と結果" class="table-scroll" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th scope="col">cohort / 実行経路</th>
+<th scope="col" style="text-align:right">work削減率中央値</th>
+<th scope="col" style="text-align:right">work削減率の観測範囲</th>
+<th scope="col" style="text-align:right">改善ペア</th>
+<th scope="col" style="text-align:right">core削減率中央値</th>
+<th scope="col" style="text-align:right">render phase削減率中央値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>初回 / 3スレッド</td>
+<td style="text-align:right">+0.9199%</td>
+<td style="text-align:right">+0.6527～+1.3392%</td>
+<td style="text-align:right">5/5</td>
+<td style="text-align:right">+0.9190%</td>
+<td style="text-align:right">+16.5896%</td>
+</tr>
+<tr>
+<td>確認 / 3スレッド</td>
+<td style="text-align:right"><strong>+0.9825%</strong></td>
+<td style="text-align:right">+0.7124～+1.7701%</td>
+<td style="text-align:right">5/5</td>
+<td style="text-align:right">+1.1012%</td>
+<td style="text-align:right">+17.0785%</td>
+</tr>
+<tr>
+<td>初回 / 1Worker</td>
+<td style="text-align:right">+1.0358%</td>
+<td style="text-align:right">+0.8195～+2.7867%</td>
+<td style="text-align:right">5/5</td>
+<td style="text-align:right">+0.5481%</td>
+<td style="text-align:right">+15.1307%</td>
+</tr>
+<tr>
+<td>確認 / 1Worker</td>
+<td style="text-align:right"><strong>+0.6933%</strong></td>
+<td style="text-align:right"><strong>−1.3453～+1.8561%</strong></td>
+<td style="text-align:right">4/5</td>
+<td style="text-align:right">+1.4278%</td>
+<td style="text-align:right">+14.5007%</td>
+</tr>
+</tbody>
+</table></div>
+<p>render phaseは<code>render_into</code>で、描画待ち・2D処理・CPU合成を含む。変更したmask loop単体でも、プログラム全体でもない。約14.5～17.1%というrender削減を全体の改善率として掲載しない。</p>
+<p>workの探索的な両側sign-flip検定p値は表の順に0.0625、0.0625、0.0625、0.375。各5ペアで取り得る最小両側p値は0.0625であり、通常の有意差判定を満たしたという主張ではない。観測範囲は信頼区間ではなく、別cohortをプールした有意性検定も行っていない。</p>
+<h3 id="tile-section-4">FPS・間隔・work・実行速度</h3>
+<p>以下は各群5runの中央値。上のペア内削減率とは別に集計した。実行速度の100%は基板の約57.52416Hzに相当する。</p>
+<p class="table-hint">狭い画面では表を横にスクロールできます。</p><div aria-label="タイル改善の測定条件と結果" class="table-scroll" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th scope="col">cohort</th>
+<th scope="col">経路</th>
+<th scope="col">変種</th>
+<th scope="col" style="text-align:right">平均FPS</th>
+<th scope="col" style="text-align:right">frame間隔 ms</th>
+<th scope="col" style="text-align:right">work ms</th>
+<th scope="col" style="text-align:right">実行速度 %</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>初回</td>
+<td>3スレッド</td>
+<td>対照</td>
+<td style="text-align:right">57.5081</td>
+<td style="text-align:right">17.3889</td>
+<td style="text-align:right">7.8774</td>
+<td style="text-align:right">99.9720</td>
+</tr>
+<tr>
+<td>初回</td>
+<td>3スレッド</td>
+<td>候補</td>
+<td style="text-align:right">57.5048</td>
+<td style="text-align:right">17.3899</td>
+<td style="text-align:right">7.8017</td>
+<td style="text-align:right">99.9663</td>
+</tr>
+<tr>
+<td>初回</td>
+<td>1Worker</td>
+<td>対照</td>
+<td style="text-align:right">57.5098</td>
+<td style="text-align:right">17.3883</td>
+<td style="text-align:right">9.3900</td>
+<td style="text-align:right">99.9751</td>
+</tr>
+<tr>
+<td>初回</td>
+<td>1Worker</td>
+<td>候補</td>
+<td style="text-align:right">57.6037</td>
+<td style="text-align:right">17.3600</td>
+<td style="text-align:right">9.2733</td>
+<td style="text-align:right">100.1382</td>
+</tr>
+<tr>
+<td>確認</td>
+<td>3スレッド</td>
+<td>対照</td>
+<td style="text-align:right">57.5094</td>
+<td style="text-align:right">17.3885</td>
+<td style="text-align:right">7.8744</td>
+<td style="text-align:right">99.9743</td>
+</tr>
+<tr>
+<td>確認</td>
+<td>3スレッド</td>
+<td>候補</td>
+<td style="text-align:right">57.6024</td>
+<td style="text-align:right">17.3604</td>
+<td style="text-align:right">7.7970</td>
+<td style="text-align:right">100.1359</td>
+</tr>
+<tr>
+<td>確認</td>
+<td>1Worker</td>
+<td>対照</td>
+<td style="text-align:right">57.5153</td>
+<td style="text-align:right">17.3867</td>
+<td style="text-align:right">9.4233</td>
+<td style="text-align:right">99.9847</td>
+</tr>
+<tr>
+<td>確認</td>
+<td>1Worker</td>
+<td>候補</td>
+<td style="text-align:right">57.5098</td>
+<td style="text-align:right">17.3883</td>
+<td style="text-align:right">9.3700</td>
+<td style="text-align:right">99.9751</td>
+</tr>
+</tbody>
+</table></div>
+<p>通常再生は基板速度付近に制限される。FPSや間隔の小さい差、有限区間で100%を少し超える値を、表示レートやスマホ速度の向上として扱わない。</p>
+<h3 id="tile-section-5">回帰検証</h3>
+<ul>
+<li>native ASan/UBSanと最適化Wasmで、それぞれ608,032差分ケースを通過。全mask、反転、透明/opaque、座標出力、8/128ピクセル境界、clip/scroll/split、ランダム矩形、実際のdecode/update/draw経路を比較した。</li>
+<li>8回の2,600フレームreplayで20,800組の画像/PCM SHA-256比較と208選択状態チェックが一致。対照を含む比較件数であり、すべてが別々の候補フレームという意味ではない。</li>
+<li>4回の専用イベント監査で、各49,296,627イベントの順序付き記録が一致。追加の104画像/PCM/選択状態チェックも一致した。</li>
+<li>入力、macro、camera、audio、loader、通常/互換経路、touch配置、motion viewerを含む24機能ジョブが通過した。</li>
+<li>性能40runの最終framebufferと選択状態が一致し、live audioのunderrun・overrun・errorは全40runで0。これは上の全frame SHA-256比較とは別の終点検証である。</li>
+</ul>
+<p>初回Wasm単体試験では大きなfixtureをstackへ置いたためoverflowし、fixtureだけを静的配置へ変更して再試験を通した。失敗記録を保持し、生産コードで隠す修正はしていない。これらは検証したtraceと選択状態の証拠であり、全場面の完全状態同値性の証明ではない。</p>
+<h3 id="tile-section-6">不利な結果と未確認事項</h3>
+<p>確認cohortの1Worker・第5ペアでは、総workが0.125ms、1.3453%増加した。coreは0.02167ms、renderは0.16000ms減少する一方、boardは0.13667ms、RPC残余は0.14000ms、Canvasは0.01500ms増加した。このrunも集計に残している。重なるphaseや別々に取った中央値を加算して全体時間を作らない。</p>
+<p>board phaseのペア削減率中央値は4群すべて負で、表の順に−0.4045%、−0.2187%、−1.8302%、−0.5007%。mask単体の利益やboard悪化の原因を、コード配置・host変動・粗い時計から独立に分離できていない。</p>
+<p>確認cohortでは両経路の全ペアでRPC残余が悪化したが、coreは全ペアで改善した。RPCは往復時間からWorker時間を引いた量で、メッセージ処理・スケジューリング・未計装処理を含み、純粋な通信遅延ではない。</p>
+<p>以前の同じengineの時計確認は隔離経路約0.020ms、非隔離経路約1msだった。今回の性能runに新しいclock probeは挿入しておらず、特に1Workerの細かいphase帰属には制限がある。host負荷は変動し、監視用の読取り接続が中断したことによる測定への影響も定量されていない。測定自体の再起動・run除外はない。</p>
+<p>他stage・他character、スマホ実機の持続動作、実touch/controller、発熱・消費電力・全体memory、物理scanoutは未測定。<strong>反復した小さいwork改善と一貫したrender/core低減を根拠に、検証済み実装を明示的ローカル利用へ限定する。既定OFFを維持し、全run無回帰や一般向け配備を約束しない。</strong></p>
+<h3 id="tile-section-7">出典の識別</h3>
+<p>元の開発記録は<code>TILE-MASK-SPANS.md</code>と<code>overnight-tile-spans.json</code>。実装コミットと条件は上記のとおり。数値記録には146個の証拠ハッシュが保存されている。本資料は公開用の要約であり、非公開の生ログやゲーム素材を転記していない。</p>
 </main><footer><p>公開：GOROman。解析原稿の更新日：2026年10月14日 UTC。<a href="index.html">原文の日本語訳に戻る</a>。このページではROM・ROM由来コード・私的情報を配布していません。</p><p>原文の出典：<a href="https://segaretro.org/index.php?title=Sega_Model_2&amp;oldid=1149915">Sega Retro「Sega Model 2」固定版1149915</a>、<a href="https://segaretro.org/index.php?title=Sega_Model_2&amp;action=history">Sega Retro contributors</a>。原文はCC BY 4.0。解析は原文の翻訳とは独立し、根拠は各節の資料リンクと測定記録の識別情報で示します。</p><p>本ページの独自部分は明示的に <a href="https://creativecommons.org/licenses/by/4.0/" rel="license">CC BY 4.0</a> で提供します。<a href="LICENSE.txt">ライセンス</a>。これはMAMEなどのソースコードやリンク先の第三者資料のライセンスを変更するものではありません。</p></footer></body></html>

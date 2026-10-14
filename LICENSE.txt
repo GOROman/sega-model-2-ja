@@ -36,3 +36,7 @@ Final analysis update (2026-10-14): vf2-scheduler-analysis-ja.md,
 vf2-68000-profile-ja.md and vf2-tgp-optimization-ja.md are original analysis
 documents explicitly provided under CC BY 4.0 by GOROman. Existing source-code
 and third-party licenses are not changed.
+
+Tile-mask span analysis addition (2026-10-14): vf2-tile-spans-ja.md and its
+HTML rendering are original analysis content explicitly provided under CC BY 4.0
+by GOROman. This does not change source-code or third-party licenses.
